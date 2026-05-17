@@ -6,7 +6,7 @@ optimized for conversion: scarcity messaging, multi-step qualifying
 inquiry form, real client video testimonials, and a founder-led
 trust section.
 
-**Live site:** https://siddharth-debugs.github.io/brightlight-immigration/
+**Live site:** https://siddharth-debugs.github.io/brightlight-immigration-landing-pages/
 
 ## Stack
 
@@ -63,7 +63,7 @@ npm run build    # build to dist/
 
 `main` auto-deploys to GitHub Pages via
 [.github/workflows/deploy.yml](.github/workflows/deploy.yml). The
-workflow injects `BASE=/brightlight-immigration/` at build time so
+workflow injects `BASE=/brightlight-immigration-landing-pages/` at build time so
 Vite emits the correct asset paths.
 
 ## Customizing
