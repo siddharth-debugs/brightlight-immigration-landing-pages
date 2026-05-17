@@ -4,7 +4,8 @@ import react from "@vitejs/plugin-react";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // GitHub Pages serves the site under /<repo-name>/.
-  // Override at build time with: BASE=/your-repo/ npm run build
-  base: process.env.BASE || "/brightlight-spousal-pr/",
+  // Local dev: "/" so the site opens at http://localhost:5173/.
+  // Production: GitHub Actions sets BASE=/<repo-name>/ so Vite emits
+  // the correct asset paths for GitHub Pages.
+  base: process.env.BASE || "/",
 });
