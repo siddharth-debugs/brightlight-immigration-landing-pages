@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { Star, ShieldCheck, ArrowRight, Phone } from "lucide-react";
 import { BRAND } from "../data";
 
-export default function Hero({ onCTA }) {
+export default function Hero({ service, onCTA }) {
+  const h = service.hero;
   return (
     <section
       id="top"
@@ -25,7 +26,7 @@ export default function Hero({ onCTA }) {
             >
               <span className="pill">
                 <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-red-500" />
-                Only 3 free slots left this week
+                {h.badge}
               </span>
             </motion.div>
 
@@ -33,13 +34,13 @@ export default function Hero({ onCTA }) {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.08 }}
-              className="mt-5 font-display text-[44px] font-medium leading-[1.02] tracking-[-0.02em] text-navy-900 sm:text-[58px] lg:text-[70px]"
+              className="mt-5 font-display text-[44px] leading-[1.02] tracking-[-0.02em] text-navy-900 sm:text-[58px] lg:text-[70px]"
             >
-              Bring your spouse{" "}
-              <span className="italic text-navy-700">to Canada.</span>
+              {h.h1Lead}{" "}
+              <span className="italic text-navy-700">{h.h1LeadItalic}</span>
               <span className="block">
-                Without another{" "}
-                <span className="scribble-underline">refusal.</span>
+                {h.h1Tail}{" "}
+                <span className="scribble-underline">{h.h1Scribble}</span>
               </span>
             </motion.h1>
 
@@ -47,10 +48,9 @@ export default function Hero({ onCTA }) {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.16 }}
-              className="mt-5 max-w-[520px] text-pretty text-[17px] leading-[1.55] text-navy-700 sm:text-[18px]"
+              className="mt-5 max-w-[560px] text-pretty text-[17px] leading-[1.55] text-navy-700 sm:text-[18px]"
             >
-              Free 15-minute call with a licensed RCIC. We tell you exactly
-              what your file needs. No pitch.
+              {h.subhead}
             </motion.p>
 
             <motion.div
@@ -106,15 +106,15 @@ export default function Hero({ onCTA }) {
               <div className="relative grain bg-navy-800 p-6 text-cream">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-400">
-                    Free strategy call
+                    {h.cardEyebrow}
                   </span>
                   <span className="rounded-full border border-cream/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-gold-400">
                     $0
                   </span>
                 </div>
                 <h3 className="mt-3 font-display text-[30px] leading-[1.05] tracking-tight">
-                  15 minutes. <br />
-                  One honest answer.
+                  {h.cardTitle[0]} <br />
+                  {h.cardTitle[1]}
                 </h3>
               </div>
 
@@ -134,8 +134,7 @@ export default function Hero({ onCTA }) {
                 </div>
 
                 <button onClick={onCTA} className="btn-primary mt-5 w-full">
-                  Pick my slot — 2 min{" "}
-                  <ArrowRight className="h-4 w-4" />
+                  {h.cardCta} <ArrowRight className="h-4 w-4" />
                 </button>
 
                 <div className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-navy-700/70">

@@ -5,7 +5,8 @@ import { Timer } from "lucide-react";
 const TOTAL_SLOTS = 8;
 const TAKEN = 5;
 
-export default function UrgencyBlock({ onCTA }) {
+export default function UrgencyBlock({ service, onCTA }) {
+  const u = service.urgency;
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
@@ -38,14 +39,14 @@ export default function UrgencyBlock({ onCTA }) {
             <div>
               <span className="eyebrow">
                 <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-red-500" />
-                Weekly intake closing
+                {u.eyebrow}
               </span>
-              <h2 className="mt-3 font-display text-[34px] font-medium leading-[1.05] tracking-tight text-navy-900 sm:text-[44px]">
-                Only <span className="italic">3 slots</span> left this week.
+              <h2 className="mt-3 font-display text-[34px] leading-[1.05] tracking-tight text-navy-900 sm:text-[44px]">
+                {u.title1}{" "}
+                <span className="italic">{u.italic}</span> {u.suffix}
               </h2>
               <p className="mt-3 max-w-md text-[15.5px] text-navy-700">
-                We cap intake at 8 files per week so every case gets senior
-                RCIC review. Next batch opens Monday.
+                {u.body}
               </p>
 
               <div className="mt-5 max-w-md">
@@ -67,7 +68,7 @@ export default function UrgencyBlock({ onCTA }) {
               </div>
 
               <button onClick={onCTA} className="btn-primary mt-7">
-                Claim a remaining slot
+                {u.cta}
               </button>
             </div>
 
@@ -99,7 +100,7 @@ function Timebox({ v, l, accent }) {
         accent ? "border-gold-400 bg-gold-50" : "border-navy-800/10 bg-cream"
       }`}
     >
-      <div className="font-display text-[26px] font-semibold leading-none tabular-nums text-navy-900">
+      <div className="font-display text-[26px] leading-none tabular-nums text-navy-900">
         {String(v).padStart(2, "0")}
       </div>
       <div className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-navy-700">

@@ -2,35 +2,23 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ArrowRight, ArrowLeft, Check, ShieldCheck, Lock } from "lucide-react";
 
-const STEPS = [
+const DEFAULT_STEPS = [
   {
-    key: "status",
-    q: "What is your relationship status?",
+    key: "service",
+    q: "Which service do you need?",
     options: [
-      { v: "married", l: "Married" },
-      { v: "common-law", l: "Common-law" },
-      { v: "engaged", l: "Engaged" },
-    ],
-  },
-  {
-    key: "spouseLocation",
-    q: "Where is your spouse right now?",
-    options: [
-      { v: "in-canada", l: "In Canada" },
-      { v: "abroad", l: "Outside Canada" },
-    ],
-  },
-  {
-    key: "refusal",
-    q: "Any prior Canadian visa or PR refusal?",
-    options: [
-      { v: "no", l: "No" },
-      { v: "yes", l: "Yes" },
+      { v: "spousal", l: "Spousal sponsorship" },
+      { v: "pgwp", l: "Post-Graduate Work Permit" },
+      { v: "vulnerable", l: "Vulnerable Worker OWP" },
+      { v: "francophone", l: "Francophone Mobility" },
+      { v: "other", l: "Something else" },
     ],
   },
 ];
 
-export default function InquiryModal({ open, onClose }) {
+export default function InquiryModal({ open, onClose, service }) {
+  const STEPS = service?.inquiry?.steps || DEFAULT_STEPS;
+  const serviceLabel = service?.inquiry?.serviceLabel || "your case";
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [contact, setContact] = useState({ name: "", phone: "" });

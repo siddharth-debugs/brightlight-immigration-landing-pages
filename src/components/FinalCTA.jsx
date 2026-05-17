@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck, Phone } from "lucide-react";
 import { BRAND } from "../data";
 
-export default function FinalCTA({ onCTA }) {
+export default function FinalCTA({ service, onCTA }) {
+  const f = service.finalCTA;
   return (
     <section className="relative overflow-hidden bg-navy-900 py-20 text-cream sm:py-24">
       <div className="pointer-events-none absolute -right-40 -top-20 h-[420px] w-[420px] rounded-full bg-gold-400/15 blur-3xl" />
@@ -17,11 +18,10 @@ export default function FinalCTA({ onCTA }) {
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-400">
             <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-gold-400" />
-            3 free slots left
+            {f.badge}
           </span>
-          <h2 className="mt-5 font-display text-[40px] font-medium leading-[1.02] tracking-tight text-cream sm:text-[60px]">
-            One call.{" "}
-            <span className="italic text-gold-400">One step closer.</span>
+          <h2 className="mt-5 font-display text-[40px] leading-[1.02] tracking-tight text-cream sm:text-[60px]">
+            {f.title1} <span className="italic text-gold-400">{f.italic}</span>
           </h2>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
