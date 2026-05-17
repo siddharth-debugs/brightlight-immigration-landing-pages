@@ -1,11 +1,12 @@
-# Brightlight Spousal Sponsorship — Landing Page
+# Brightlight Immigration — Ad Landing Pages
 
-Ads-ready landing page for **Brightlight Immigration**'s spousal PR
-service. Optimized for paid traffic conversion: scarcity messaging,
-multi-step qualifying inquiry form, real client video testimonials,
-and a founder-led trust section.
+Multi-page ad funnel for **Brightlight Immigration**. One discovery
+hub plus four single-purpose paid-traffic landing pages, each
+optimized for conversion: scarcity messaging, multi-step qualifying
+inquiry form, real client video testimonials, and a founder-led
+trust section.
 
-**Live site:** https://siddharth-debugs.github.io/brightlight-spousal-pr/
+**Live site:** https://siddharth-debugs.github.io/brightlight-immigration/
 
 ## Stack
 
@@ -16,7 +17,18 @@ and a founder-led trust section.
 - Lucide React (icons)
 - DM Serif Display + DM Sans (Google Fonts)
 
-## Sections
+## Pages
+
+- `/` — Discovery hub with all 4 service cards
+- `/spousal-sponsorship` — Spousal PR (married, common-law,
+  conjugal partners)
+- `/pgwp` — Post-Graduate Work Permit (180-day deadline urgency)
+- `/vulnerable-worker-permit` — OWP for vulnerable workers
+  (confidential, urgent tone)
+- `/francophone-mobility` — No-LMIA work permit for French speakers
+  (Updated July 2025 badge)
+
+## Landing page sections (per service)
 
 1. **Hero** — headline, slot counter card, primary CTA
 2. **Trust strip** — 13 years, 1,000+ families, 98% approval, EN/PA/HI
@@ -29,8 +41,15 @@ and a founder-led trust section.
 7. **Final CTA** — closing call-to-action panel
 8. **Footer strip**
 
-Plus: multi-step inquiry modal, exit-intent popup, social-proof
-booking toasts, sticky mobile CTA.
+Plus: per-service multi-step inquiry modal with tailored qualifying
+questions, exit-intent popup, social-proof booking toasts, sticky
+mobile CTA.
+
+Each service is configured in [src/services/](src/services/) — one
+file per landing page. The same component tree (`Hero`, `Benefits`,
+`UrgencyBlock`, `FinalCTA`, `InquiryModal`) reads from the active
+service config, so adding a 5th landing page is one new file plus
+one route.
 
 ## Run locally
 
@@ -44,7 +63,7 @@ npm run build    # build to dist/
 
 `main` auto-deploys to GitHub Pages via
 [.github/workflows/deploy.yml](.github/workflows/deploy.yml). The
-workflow injects `BASE=/brightlight-spousal-pr/` at build time so
+workflow injects `BASE=/brightlight-immigration/` at build time so
 Vite emits the correct asset paths.
 
 ## Customizing
