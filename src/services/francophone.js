@@ -4,50 +4,51 @@ export default {
   shortName: "Francophone Mobility",
   fullName: "Francophone Mobility Program",
   category: "Work Permit",
-  tagline: "French-speaking? Skip the LMIA and work in Canada faster.",
+  tagline:
+    "French-speaking? Work in Canada outside Quebec without an LMIA.",
   cardBlurb:
-    "Work in Canada outside Quebec with no LMIA required.",
-  processing: "2–4 weeks (vs months for LMIA-based permits)",
-  audience: "French-speaking foreign nationals (NCLC 5+)",
+    "An open work permit for up to 3 years for NCLC 5+ French speakers — work for almost any employer, almost anywhere in Canada outside Quebec.",
+  processing: "Faster than LMIA-based work permits",
+  audience: "French-speaking foreign nationals (NCLC 5+ in speaking & listening)",
   accent: "from-indigo-700 to-indigo-500",
   badge: "Updated July 2025",
   meta: {
     title:
-      "Francophone Mobility Program — No LMIA Work Permit | Brightlight Immigration",
+      "Francophone Mobility Program — No-LMIA Work Permit (C16) | Brightlight Immigration",
     description:
-      "RCIC-licensed filing for the Francophone Mobility Program. Work in Canada outside Quebec without an LMIA. Free 15-minute eligibility call.",
+      "RCIC-licensed filing for the Francophone Mobility Program. Open work permit of up to 3 years for French-speaking foreign nationals working outside Quebec. No LMIA required (LMIA exemption code C16).",
   },
   hero: {
     badge: "Updated July 2025 · No LMIA required",
     h1Lead: "Parlez-vous français?",
     h1LeadItalic: "Skip the LMIA.",
-    h1Tail: "Work in Canada,",
-    h1Scribble: "with your French.",
+    h1Tail: "Work in Canada",
+    h1Scribble: "outside Quebec.",
     subhead:
-      "We file work permits under the Francophone Mobility Program for NCLC 5+ French speakers — no LMIA, no employer red tape. Book a free 15-minute call with a licensed RCIC to confirm eligibility.",
+      "The Francophone Mobility Program lets Canadian employers outside Quebec hire French-speaking foreign nationals without an LMIA. You can receive an open work permit valid for up to three years. Book a free 15-minute call with a licensed RCIC to confirm eligibility.",
     cardEyebrow: "Free eligibility check",
     cardTitle: ["15 minutes.", "Eligibility confirmed."],
     cardCta: "Check my eligibility",
   },
   benefits: {
     eyebrow: "Why Brightlight",
-    title1: "How your French",
-    titleItalic: "opens Canada.",
+    title1: "What the program",
+    titleItalic: "actually requires.",
     items: [
       {
-        icon: "clock",
-        title: "No LMIA. Faster filing.",
-        body: "We file under the Mobilité Francophone exemption — typically 2–4 weeks instead of the months an LMIA-based permit takes.",
-      },
-      {
         icon: "shield",
-        title: "TEF / TCF documented correctly.",
-        body: "We help you evidence NCLC 5+ French ability the way IRCC wants to see it on file.",
+        title: "No LMIA — exemption code C16.",
+        body: "Your employer submits an offer of employment through the IRCC Employer Portal under LMIA exemption code C16 (Mobilité Francophone). No Labour Market Impact Assessment needed.",
       },
       {
         icon: "files",
-        title: "Outside Quebec, anywhere.",
-        body: "Any province or territory except Quebec — BC, Ontario, Alberta, Atlantic provinces, and the territories.",
+        title: "NCLC 5+ in speaking and listening.",
+        body: "You only need to prove NCLC 5 (CLB 5 equivalent) in speaking and listening — not all four skills. We help you document the right TEF Canada or TCF Canada result the way IRCC expects to see it.",
+      },
+      {
+        icon: "clock",
+        title: "Open permit, up to 3 years.",
+        body: "You receive an open work permit valid for up to three years, so you can work for almost any employer almost anywhere in Canada outside Quebec. Open to most TEER categories, with primary agriculture in TEER 4 and 5 excluded.",
       },
     ],
   },
@@ -63,7 +64,7 @@ export default {
         q: "What is your French level?",
         options: [
           { v: "native", l: "Native speaker" },
-          { v: "nclc5", l: "NCLC 5+ (tested)" },
+          { v: "nclc5", l: "NCLC 5+ (TEF/TCF tested)" },
           { v: "untested", l: "Fluent but untested" },
           { v: "learning", l: "Still learning" },
         ],
