@@ -53,8 +53,8 @@ export default function Testimonials() {
             </div>
           </div>
 
-          <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {REELS.map((reel, i) => (
+          <div className="mx-auto mt-7 grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {REELS.slice(0, 4).map((reel, i) => (
               <ReelTile
                 key={reel.id}
                 reel={reel}

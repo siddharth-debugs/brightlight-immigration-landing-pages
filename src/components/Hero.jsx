@@ -25,7 +25,7 @@ export default function Hero({ service, onCTA }) {
               className="flex flex-wrap items-center gap-2"
             >
               <span className="pill">
-                <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-red-500" />
+                <span className="h-1.5 w-1.5 rounded-full bg-gold-500" />
                 {h.badge}
               </span>
             </motion.div>
@@ -119,19 +119,10 @@ export default function Hero({ service, onCTA }) {
               </div>
 
               <div className="p-6">
-                <div className="flex items-center justify-between text-[12px] font-medium text-navy-700">
-                  <span className="inline-flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-emerald-500" />
-                    3 of 8 slots left
-                  </span>
-                  <span className="font-mono text-navy-700/70">This week</span>
-                </div>
-                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-navy-800/8">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-gold-400 to-gold-500"
-                    style={{ width: "62.5%" }}
-                  />
-                </div>
+                <p className="text-[13px] leading-[1.55] text-navy-700">
+                  A licensed RCIC will walk you through your file, options, and
+                  realistic timelines. No pitch, no documents needed.
+                </p>
 
                 <button onClick={onCTA} className="btn-primary mt-5 w-full">
                   {h.cardCta} <ArrowRight className="h-4 w-4" />

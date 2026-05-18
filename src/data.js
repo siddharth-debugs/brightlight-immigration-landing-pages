@@ -89,12 +89,3 @@ export const REELS = [
   { id: "uPhje0jwtuo", name: "Harpreet Kaur", label: "Approval update" },
   { id: "eZTZE1ixfjU", name: "Ranjit Singh", label: "Brightlight review" },
 ];
-
-export const RECENT_BOOKINGS = [
-  { name: "Priya from Surrey", time: "12 min ago", action: "booked a strategy call" },
-  { name: "Daniel from Vancouver", time: "27 min ago", action: "claimed the last Friday slot" },
-  { name: "Aman from Calgary", time: "44 min ago", action: "started a refusal review" },
-  { name: "Sophia from Toronto", time: "1 hr ago", action: "booked a strategy call" },
-  { name: "Ravneet from Burnaby", time: "1 hr ago", action: "scheduled an inland review" },
-  { name: "Marcus from Richmond", time: "2 hr ago", action: "joined the outland queue" },
-];
