@@ -14,7 +14,7 @@ export default {
     title:
       "Spousal Sponsorship — Bring Your Spouse to Canada | Brightlight Immigration",
     description:
-      "RCIC-licensed Canadian spousal sponsorship. Inland and outland applications, refusal reviews, and honest eligibility advice. Book a free 15-minute call.",
+      "RCIC-licensed Canadian spousal sponsorship. Inland and outland filings, refusal reviews, honest eligibility advice. Book a free 15-minute call.",
   },
   hero: {
     badge: "Spousal sponsorship · Licensed RCIC R522969",
@@ -23,35 +23,35 @@ export default {
     h1Tail: "Permanent residence,",
     h1Scribble: "done properly.",
     subhead:
-      "We file inland and outland spousal sponsorship applications for married, common-law, and conjugal partners. Book a free 15-minute call with a licensed RCIC to map out your file and timeline.",
+      "Free 15-minute call with a licensed RCIC. Tell us your situation — we'll tell you what your file needs.",
     cardEyebrow: "Free strategy call",
     cardTitle: ["15 minutes.", "Clear next steps."],
     cardCta: "Book my call",
   },
   benefits: {
     eyebrow: "Why Brightlight",
-    title1: "What a properly filed",
-    titleItalic: "spousal file looks like.",
+    title1: "What you get",
+    titleItalic: "on the call.",
     items: [
       {
         icon: "shield",
-        title: "Licensed representation.",
-        body: "RCIC R522969 — legally authorized to represent you before IRCC. Not a consultant, not an agent.",
+        title: "An honest eligibility read.",
+        body: "We tell you if you qualify — inland, outland, or not yet — before you spend a dollar.",
       },
       {
         icon: "files",
-        title: "Officer-ready evidence.",
-        body: "Genuineness, co-habitation, and relationship history documented the way an IRCC officer reads them.",
+        title: "The exact documents your file needs.",
+        body: "Genuineness, co-habitation, financial — we walk you through what IRCC will ask for.",
       },
       {
         icon: "refresh",
-        title: "Refusals reviewed honestly.",
-        body: "If a prior refusal needs to be addressed, we explain what went wrong and what it takes to file again.",
+        title: "A clear plan if you've been refused.",
+        body: "We read the refusal, name what went wrong, and tell you whether a re-file makes sense.",
       },
     ],
   },
   finalCTA: {
-    title1: "One call.",
+    title1: "Free 15-minute call.",
     italic: "Clearer next steps.",
   },
   inquiry: {

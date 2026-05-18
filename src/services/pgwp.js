@@ -6,7 +6,7 @@ export default {
   category: "Work Permit",
   tagline: "Turn your Canadian degree into a 3-year open work permit.",
   cardBlurb:
-    "International grad from a DLI? Stay and work in Canada for up to 3 years.",
+    "International grad from a Canadian DLI? Stay and work for up to 3 years.",
   processing: "Apply within 180 days of program completion",
   audience: "International grads from a Canadian DLI",
   accent: "from-emerald-700 to-emerald-500",
@@ -23,30 +23,30 @@ export default {
     h1Tail: "Your PGWP,",
     h1Scribble: "filed right.",
     subhead:
-      "We file Post-Graduate Work Permits for international graduates of Canadian DLIs. Book a free 15-minute call with a licensed RCIC to confirm eligibility, duration, and timing.",
+      "Free 15-minute call with a licensed RCIC. We confirm your eligibility, the duration you qualify for, and the documents IRCC will want.",
     cardEyebrow: "Free PGWP audit",
     cardTitle: ["15 minutes.", "Eligibility confirmed."],
     cardCta: "Check my eligibility",
   },
   benefits: {
     eyebrow: "Why Brightlight",
-    title1: "What a properly filed",
-    titleItalic: "PGWP file looks like.",
+    title1: "What you get",
+    titleItalic: "on the call.",
     items: [
       {
         icon: "clock",
-        title: "Filed inside the 180-day window.",
-        body: "We document program completion and study-permit validity precisely the way IRCC requires.",
+        title: "Are you still inside the 180-day window?",
+        body: "We check your completion date and study-permit validity — the two timing facts that decide eligibility.",
       },
       {
         icon: "files",
-        title: "Transcripts and completion letter.",
-        body: "The two most-missed documents that quietly trigger refusals — included from day one.",
+        title: "The documents that prevent refusals.",
+        body: "Final transcript and completion letter, prepared the way IRCC expects to receive them.",
       },
       {
         icon: "shield",
-        title: "Correct duration assigned.",
-        body: "We make sure IRCC issues the full duration your program qualifies for, not a shorter permit by mistake.",
+        title: "The correct duration assigned.",
+        body: "Some grads receive a 1- or 2-year permit by mistake. We make sure IRCC issues the full duration your program qualifies for.",
       },
     ],
   },

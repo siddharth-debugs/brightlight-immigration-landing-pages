@@ -4,10 +4,9 @@ export default {
   shortName: "Francophone Mobility",
   fullName: "Francophone Mobility Program",
   category: "Work Permit",
-  tagline:
-    "French-speaking? Work in Canada outside Quebec without an LMIA.",
+  tagline: "French-speaking? Work in Canada outside Quebec — no LMIA.",
   cardBlurb:
-    "An open work permit for up to 3 years for NCLC 5+ French speakers — work for almost any employer, almost anywhere in Canada outside Quebec.",
+    "Open work permit of up to 3 years for NCLC 5+ French speakers, no LMIA required.",
   processing: "Faster than LMIA-based work permits",
   audience: "French-speaking foreign nationals (NCLC 5+ in speaking & listening)",
   accent: "from-indigo-700 to-indigo-500",
@@ -16,7 +15,7 @@ export default {
     title:
       "Francophone Mobility Program — No-LMIA Work Permit (C16) | Brightlight Immigration",
     description:
-      "RCIC-licensed filing for the Francophone Mobility Program. Open work permit of up to 3 years for French-speaking foreign nationals working outside Quebec. No LMIA required (LMIA exemption code C16).",
+      "RCIC-licensed filing for the Francophone Mobility Program. Open work permit up to 3 years for French-speaking foreign nationals outside Quebec. No LMIA (exemption code C16).",
   },
   hero: {
     badge: "Updated July 2025 · No LMIA required",
@@ -25,30 +24,30 @@ export default {
     h1Tail: "Work in Canada",
     h1Scribble: "outside Quebec.",
     subhead:
-      "The Francophone Mobility Program lets Canadian employers outside Quebec hire French-speaking foreign nationals without an LMIA. You can receive an open work permit valid for up to three years. Book a free 15-minute call with a licensed RCIC to confirm eligibility.",
+      "Free 15-minute call with a licensed RCIC. We confirm whether you qualify under exemption code C16 — and what your French test needs to show.",
     cardEyebrow: "Free eligibility check",
     cardTitle: ["15 minutes.", "Eligibility confirmed."],
     cardCta: "Check my eligibility",
   },
   benefits: {
     eyebrow: "Why Brightlight",
-    title1: "What the program",
-    titleItalic: "actually requires.",
+    title1: "What you get",
+    titleItalic: "on the call.",
     items: [
       {
         icon: "shield",
-        title: "No LMIA — exemption code C16.",
-        body: "Your employer submits an offer of employment through the IRCC Employer Portal under LMIA exemption code C16 (Mobilité Francophone). No Labour Market Impact Assessment needed.",
+        title: "Confirmation that C16 applies to you.",
+        body: "No LMIA needed when your job offer is outside Quebec and you meet the language bar.",
       },
       {
         icon: "files",
-        title: "NCLC 5+ in speaking and listening.",
-        body: "You only need to prove NCLC 5 (CLB 5 equivalent) in speaking and listening — not all four skills. We help you document the right TEF Canada or TCF Canada result the way IRCC expects to see it.",
+        title: "Clarity on the French test.",
+        body: "You only need NCLC 5 in speaking and listening — TEF Canada or TCF Canada. We tell you what score to target.",
       },
       {
         icon: "clock",
-        title: "Open permit, up to 3 years.",
-        body: "You receive an open work permit valid for up to three years, so you can work for almost any employer almost anywhere in Canada outside Quebec. Open to most TEER categories, with primary agriculture in TEER 4 and 5 excluded.",
+        title: "A 3-year open permit, properly filed.",
+        body: "Work for almost any employer almost anywhere in Canada outside Quebec. We file it the way IRCC wants to see it.",
       },
     ],
   },
