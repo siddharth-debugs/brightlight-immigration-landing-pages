@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, A11y, Keyboard } from "swiper/modules";
@@ -337,19 +337,11 @@ function PathwaysSection({ onCTA }) {
 }
 
 function PathwayTabsSlider({ active, onChange }) {
-  const swiperRef = useRef(null);
-
-  // Single source of truth: Swiper. Tab clicks only move the slider;
-  // onSlideChange updates the active pathway. Avoids feedback loops
-  // that previously caused a click to land on the wrong slide.
-  const goTo = (slug) => {
-    const idx = PATHWAYS.findIndex((p) => p.n === slug);
-    if (idx < 0) return;
-    const s = swiperRef.current;
-    if (s) s.slideTo(idx);
-    else onChange(slug);
-  };
-
+  // Selection state is independent of slider scroll position.
+  // Without loop and with slidesPerView=4 over 5 slides, Swiper's
+  // activeIndex caps at 1 — so we can't rely on it to identify which
+  // pathway is selected. The tabs themselves drive selection; the
+  // slider just lets you scroll the visible window.
   return (
     <div className="pathway-tabs-wrap relative mx-auto mt-12 max-w-6xl">
       <button
@@ -368,11 +360,6 @@ function PathwayTabsSlider({ active, onChange }) {
       </button>
 
       <Swiper
-        onSwiper={(s) => (swiperRef.current = s)}
-        onSlideChange={(s) => {
-          const next = PATHWAYS[s.activeIndex];
-          if (next && next.n !== active) onChange(next.n);
-        }}
         modules={[Navigation, Pagination, A11y, Keyboard]}
         navigation={{ prevEl: ".pathway-prev", nextEl: ".pathway-next" }}
         pagination={{
@@ -382,11 +369,9 @@ function PathwayTabsSlider({ active, onChange }) {
           bulletActiveClass: "pathway-dot-active",
         }}
         keyboard={{ enabled: true }}
-        slideToClickedSlide
         slidesPerView={1.3}
         spaceBetween={14}
         speed={400}
-        initialSlide={0}
         breakpoints={{
           640: { slidesPerView: 2.2, spaceBetween: 16 },
           900: { slidesPerView: 3.2, spaceBetween: 18 },
@@ -396,13 +381,11 @@ function PathwayTabsSlider({ active, onChange }) {
       >
         {PATHWAYS.map((p) => (
           <SwiperSlide key={p.n} className="!h-auto">
-            {({ isActive }) => (
-              <PathwayTab
-                p={p}
-                active={isActive}
-                onClick={() => goTo(p.n)}
-              />
-            )}
+            <PathwayTab
+              p={p}
+              active={p.n === active}
+              onClick={() => onChange(p.n)}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
