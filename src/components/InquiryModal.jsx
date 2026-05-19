@@ -69,9 +69,10 @@ export default function InquiryModal({ open, onClose, service }) {
     setAnswers((a) => ({ ...a, [stepDef.key]: value }));
     const picked = (stepDef.options || []).find((o) => o.v === value);
     setTimeout(() => {
-      // If the picked option marks this lead as ineligible, skip the
-      // remaining qualifying questions and jump straight to contact.
-      if (picked?.ineligible) setStep(STEPS.length);
+      // Two skip-to-contact paths:
+      //   ineligible       -> jump to contact, show "may not qualify" on submit
+      //   skipToContact    -> jump to contact, normal success
+      if (picked?.ineligible || picked?.skipToContact) setStep(STEPS.length);
       else setStep((s) => s + 1);
     }, 160);
   }

@@ -75,7 +75,7 @@ export default {
           { v: "expired", l: "Already expired" },
           { v: "soon", l: "Within 3 months" },
           { v: "later", l: "3–12 months" },
-          { v: "12plus", l: "More than 12 months" },
+          { v: "12plus", l: "More than 12 months", skipToContact: true },
         ],
       },
       {
