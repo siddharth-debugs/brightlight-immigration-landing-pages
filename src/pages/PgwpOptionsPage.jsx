@@ -10,6 +10,7 @@ import {
   Phone,
   ShieldCheck,
   Check,
+  X,
 } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -21,28 +22,31 @@ import { setSEO, setJSONLD, SITE_URL, ogImageFor } from "../lib/seo";
 const PATHWAYS = [
   {
     n: "01",
+    short: "LMIA",
     name: "LMIA-Based Work Permit",
     icon: Briefcase,
     pitch:
-      "Your employer applies for an LMIA. You stay on a closed work permit while your PR file moves forward.",
+      "Your employer files an LMIA. You stay on a closed permit while your PR file moves forward.",
     forWho:
-      "Skilled workers with employer support and a viable PR profile (typically TEER 0–3).",
+      "Skilled workers (typically TEER 0–3) whose employer is willing to support the LMIA process.",
     bullets: [
       "A confirmed job offer in Canada",
       "An employer willing to support the LMIA",
       "A solid CRS score for the PR pathway",
     ],
     pros: ["You keep working", "Strong CRS bump from arranged employment"],
-    cons: ["Tied to one employer", "LMIA process is typically 8–12 months"],
-    timing: "End-to-end: 8–12 months",
-    cta: "Book a free consultation",
+    cons: ["Tied to one employer", "Process typically 8–12 months"],
+    timing: "8–12 months end-to-end",
+    cost: "Free 15-min call",
+    ctaLabel: "Book a free consultation",
   },
   {
     n: "02",
+    short: "Francophone",
     name: "Francophone Mobility Program",
     icon: Languages,
     pitch:
-      "If you can prove NCLC 5+ French in speaking and listening, you skip the LMIA entirely.",
+      "Prove NCLC 5+ French in speaking and listening — skip the LMIA entirely.",
     forWho:
       "French-speaking applicants destined outside Quebec, in most TEER categories.",
     bullets: [
@@ -52,11 +56,13 @@ const PATHWAYS = [
     ],
     pros: ["No LMIA — exemption code C16", "Open permit up to 3 years"],
     cons: ["Requires verifiable French test result", "Quebec is excluded"],
-    timing: "Weeks, not months once your offer is ready",
-    cta: "Book a free consultation",
+    timing: "Weeks, not months",
+    cost: "Free 15-min call",
+    ctaLabel: "Book a free consultation",
   },
   {
     n: "03",
+    short: "Study",
     name: "Study Permit",
     icon: GraduationCap,
     pitch:
@@ -72,12 +78,14 @@ const PATHWAYS = [
       "Work up to 24 hours/week while studying",
       "Co-op permits possible even if PGWP is exhausted",
     ],
-    cons: ["Significant tuition outlay", "No second PGWP if your first one was used"],
-    timing: "Permit duration matches your program",
-    cta: "Book a free consultation",
+    cons: ["Significant tuition outlay", "No second PGWP if your first was used"],
+    timing: "Matches your program length",
+    cost: "Free 15-min call",
+    ctaLabel: "Book a free consultation",
   },
   {
     n: "04",
+    short: "Visitor",
     name: "Visitor Record",
     icon: Clock3,
     pitch:
@@ -91,15 +99,17 @@ const PATHWAYS = [
     ],
     pros: ["Inexpensive", "Decision typically within weeks"],
     cons: ["You cannot work on a visitor record"],
-    timing: "Days to weeks to file; up to 6 months of status",
-    cta: "Book a free consultation",
+    timing: "Days to weeks to file",
+    cost: "Free 15-min call",
+    ctaLabel: "Book a free consultation",
   },
   {
     n: "05",
+    short: "PR Session",
     name: "PR Guidance Session",
     icon: Sparkles,
     pitch:
-      "A 45–60 minute paid working session with a licensed RCIC that maps your full PR roadmap.",
+      "A 45–60 minute working session with a licensed RCIC that maps your full PR roadmap.",
     forWho:
       "Applicants who want a detailed PR strategy — beyond what a 15-minute call can cover.",
     bullets: [
@@ -107,10 +117,11 @@ const PATHWAYS = [
       "Provincial Nominee Programs (PNP)",
       "Category-based draws & niche pathways",
     ],
-    pros: ["Full file review", "Walks away with a written plan"],
-    cons: ["Paid session, not a free intro call"],
-    timing: "$99 + GST · 45–60 minutes",
-    cta: "Book PR session — $99 + GST",
+    pros: ["Full file review", "You walk away with a written plan"],
+    cons: ["Paid working session — not a free intro call"],
+    timing: "45–60 minutes",
+    cost: "$99 + GST",
+    ctaLabel: "Book the PR session",
     paid: true,
   },
 ];
@@ -185,6 +196,7 @@ export default function PgwpOptionsPage() {
 
       <main>
         <HeroSection onCTA={openModal} />
+        <PathwayIndex />
         <PathwaysSection onCTA={openModal} />
         <ClosingCTA onCTA={openModal} />
       </main>
@@ -202,9 +214,17 @@ export default function PgwpOptionsPage() {
   );
 }
 
+/* ───────────────────────── Hero ───────────────────────── */
+
 function HeroSection({ onCTA }) {
   return (
-    <section className="pb-12 pt-12 sm:pb-16 sm:pt-20">
+    <section className="relative isolate overflow-hidden pb-14 pt-12 sm:pt-20">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-x-0 top-0 h-[460px] bg-gradient-to-b from-gold-100/55 via-cream to-cream" />
+        <div className="absolute -left-40 top-12 h-[380px] w-[380px] rounded-full bg-gold-200/35 blur-3xl" />
+        <div className="absolute -right-40 top-32 h-[420px] w-[420px] rounded-full bg-navy-600/10 blur-3xl" />
+      </div>
+
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <motion.div
@@ -215,36 +235,40 @@ function HeroSection({ onCTA }) {
           >
             <span className="pill">
               <span className="h-1.5 w-1.5 rounded-full bg-gold-500" />
-              PGWP expiring · Licensed RCIC R522969
+              PGWP Expiring · Licensed RCIC R522969
             </span>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.06 }}
-            className="mt-5 font-display text-[40px] leading-[1.05] tracking-[-0.02em] text-navy-900 sm:text-[56px]"
+            transition={{ duration: 0.5, delay: 0.08 }}
+            className="mt-6 font-display text-[40px] leading-[1.02] tracking-[-0.02em] text-navy-900 sm:text-[60px]"
           >
-            PGWP expiring{" "}
+            PGWP expiring,{" "}
             <span className="italic text-navy-700">or already expired?</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.12 }}
-            className="mx-auto mt-5 max-w-xl text-[16px] leading-[1.6] text-navy-700 sm:text-[17px]"
+            transition={{ duration: 0.5, delay: 0.16 }}
+            className="mx-auto mt-5 max-w-xl text-pretty text-[16.5px] leading-[1.6] text-navy-700 sm:text-[17.5px]"
           >
             It's normal to feel uncertain when your work permit window is
-            closing. You still have <span className="font-semibold">five solid pathways</span> to
-            stay and work in Canada — we'll walk you through the one that fits.
+            closing. You still have{" "}
+            <span className="font-semibold text-navy-900">
+              five realistic pathways
+            </span>{" "}
+            to stay and work in Canada. We'll walk you through the one that
+            fits your file.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.18 }}
-            className="mt-7 flex flex-wrap items-center justify-center gap-3"
+            transition={{ duration: 0.5, delay: 0.24 }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
             <button onClick={onCTA} className="btn-gold">
               Map my pathway <ArrowRight className="h-4 w-4" />
@@ -256,7 +280,7 @@ function HeroSection({ onCTA }) {
 
           <div className="mt-6 inline-flex items-center gap-1.5 text-[12px] text-navy-700/80">
             <ShieldCheck className="h-3.5 w-3.5 text-navy-700" />
-            Free 15-min RCIC call · No documents · No obligation
+            Free 15-min call · No documents · No obligation
           </div>
         </div>
       </div>
@@ -264,27 +288,65 @@ function HeroSection({ onCTA }) {
   );
 }
 
+/* ──────────────────── Pathway compass ──────────────────── */
+
+function PathwayIndex() {
+  return (
+    <section className="border-y border-navy-800/10 bg-cream py-8">
+      <div className="container-x">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-4 flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-navy-700/70">
+            <span className="h-px w-8 bg-gold-500" />
+            Five doorways
+            <span className="h-px w-8 bg-gold-500" />
+          </div>
+          <ul className="grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-3 lg:grid-cols-5">
+            {PATHWAYS.map((p) => (
+              <li key={p.n}>
+                <a
+                  href={`#pathway-${p.n}`}
+                  className="group flex h-full items-center gap-2.5 rounded-xl border border-navy-800/8 bg-white px-3 py-2.5 transition hover:border-navy-800/25 hover:shadow-soft"
+                >
+                  <span className="font-mono text-[11px] font-semibold text-navy-700/70">
+                    {p.n}
+                  </span>
+                  <span className="text-[12.5px] font-semibold text-navy-900 group-hover:text-navy-900">
+                    {p.short}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────── Pathways list ─────────────────── */
+
 function PathwaysSection({ onCTA }) {
   return (
-    <section className="bg-white py-16 sm:py-24">
+    <section className="bg-cream py-16 sm:py-24">
       <div className="container-x">
         <div className="mx-auto max-w-2xl text-center">
           <span className="eyebrow justify-center">
-            <span className="h-1 w-6 bg-gold-500" /> Five pathways
+            <span className="h-1 w-6 bg-gold-500" /> What you can actually do
           </span>
-          <h2 className="mt-4 font-display text-[32px] leading-[1.05] tracking-tight text-navy-900 sm:text-[40px]">
-            What you can actually do{" "}
-            <span className="italic text-navy-700">next.</span>
+          <h2 className="mt-4 font-display text-[34px] leading-[1.05] tracking-tight text-navy-900 sm:text-[44px]">
+            Five pathways,{" "}
+            <span className="italic text-navy-700">in plain English.</span>
           </h2>
-          <p className="mt-3 text-[14.5px] text-navy-700">
-            Each option below has a different timeline, cost, and qualification
-            bar. We'll match you to the right one on the call.
+          <p className="mt-3 text-[14.5px] leading-[1.6] text-navy-700">
+            Each has a different timeline, cost, and qualification bar. We'll
+            match you to the right one on the call — and tell you honestly if
+            none of them fit.
           </p>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-5xl gap-6">
+        <div className="mx-auto mt-16 max-w-5xl">
           {PATHWAYS.map((p, i) => (
-            <PathwayCard key={p.n} p={p} i={i} onCTA={onCTA} />
+            <Pathway key={p.n} p={p} i={i} onCTA={onCTA} />
           ))}
         </div>
       </div>
@@ -292,119 +354,266 @@ function PathwaysSection({ onCTA }) {
   );
 }
 
-function PathwayCard({ p, i, onCTA }) {
+function Pathway({ p, i, onCTA }) {
+  if (p.paid) return <PaidPathway p={p} i={i} onCTA={onCTA} />;
   const Icon = p.icon;
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 18 }}
+      id={`pathway-${p.n}`}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.45, delay: i * 0.04 }}
-      className={`relative grid gap-6 rounded-3xl border bg-cream p-7 sm:p-9 lg:grid-cols-[180px_1fr_minmax(0,220px)] lg:items-start ${
-        p.paid
-          ? "border-gold-400/60 shadow-gold"
-          : "border-navy-800/10 shadow-soft"
-      }`}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, delay: i * 0.04 }}
+      className="relative scroll-mt-24 border-t border-navy-800/10 pt-16 first:border-t-0 first:pt-0 sm:pt-20"
     >
-      <div className="flex items-center gap-4 lg:flex-col lg:items-start lg:gap-3">
-        <span className="font-mono text-[12px] font-semibold tracking-[0.18em] text-navy-700/70">
-          STEP {p.n}
-        </span>
-        <span
-          className={`grid h-12 w-12 place-items-center rounded-2xl ${
-            p.paid
-              ? "bg-gold-400 text-navy-900"
-              : "bg-navy-800 text-cream"
-          }`}
-        >
-          <Icon className="h-5 w-5" />
-        </span>
-      </div>
-
-      <div className="min-w-0">
-        <h3 className="font-display text-[24px] leading-tight tracking-tight text-navy-900 sm:text-[28px]">
-          {p.name}
-        </h3>
-        <p className="mt-3 text-[15px] leading-[1.6] text-navy-700">
-          {p.pitch}
-        </p>
-
-        <div className="mt-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-navy-700/70">
-          Best for
-        </div>
-        <p className="mt-1.5 text-[14.5px] leading-[1.55] text-navy-800">
-          {p.forWho}
-        </p>
-
-        <div className="mt-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-navy-700/70">
-          What you need
-        </div>
-        <ul className="mt-2.5 grid gap-1.5">
-          {p.bullets.map((b) => (
-            <li
-              key={b}
-              className="flex items-start gap-2.5 text-[14px] text-navy-900"
-            >
-              <span className="mt-1 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-navy-800 text-cream">
-                <Check className="h-2.5 w-2.5" strokeWidth={3.5} />
-              </span>
-              {b}
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <ProConList label="Pros" items={p.pros} tone="pro" />
-          <ProConList label="Watch out for" items={p.cons} tone="con" />
-        </div>
-      </div>
-
-      <div className="rounded-2xl border border-navy-800/10 bg-white p-5 lg:sticky lg:top-24">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-700/70">
-          Timing
-        </div>
-        <div className="mt-1.5 font-display text-[18px] leading-tight tracking-tight text-navy-900">
-          {p.timing}
+      <div className="grid gap-10 lg:grid-cols-[180px_1fr] lg:gap-16">
+        {/* Chapter mark */}
+        <div className="flex items-start gap-6 lg:flex-col lg:items-start lg:gap-6">
+          <span
+            aria-hidden
+            className="font-display text-[88px] italic leading-none tracking-[-0.03em] text-gold-400 sm:text-[112px]"
+          >
+            {p.n}
+          </span>
+          <div className="flex items-center gap-3">
+            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-navy-800 text-cream">
+              <Icon className="h-5 w-5" />
+            </span>
+            <div className="leading-tight">
+              <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-navy-700/70">
+                Pathway
+              </div>
+              <div className="font-display text-[15px] text-navy-900">
+                {p.short}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <button
-          onClick={onCTA}
-          className={`mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-[13.5px] font-semibold transition ${
-            p.paid
-              ? "bg-gold-400 text-navy-900 hover:bg-gold-500"
-              : "bg-navy-800 text-cream hover:bg-navy-900"
-          }`}
-        >
-          {p.cta} <ArrowRight className="h-3.5 w-3.5" />
-        </button>
+        {/* Body */}
+        <div className="min-w-0">
+          <h3 className="font-display text-[28px] leading-[1.1] tracking-tight text-navy-900 sm:text-[34px]">
+            {p.name}
+          </h3>
 
-        <div className="mt-3 inline-flex items-center gap-1.5 text-[11px] text-navy-700/70">
-          <ShieldCheck className="h-3 w-3" />
-          {p.paid ? "Paid working session" : "Free 15-min call"}
+          {/* Pull-quote pitch */}
+          <blockquote className="mt-5 border-l-2 border-gold-400 pl-5 font-display text-[20px] italic leading-snug text-navy-800 sm:text-[24px]">
+            <span className="text-gold-400">“</span>
+            {p.pitch}
+            <span className="text-gold-400">”</span>
+          </blockquote>
+
+          {/* Detail grid */}
+          <div className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+            <div>
+              <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-navy-700/70">
+                Best for
+              </div>
+              <p className="mt-2 text-[14.5px] leading-[1.6] text-navy-800">
+                {p.forWho}
+              </p>
+            </div>
+            <div>
+              <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-navy-700/70">
+                Timing
+              </div>
+              <p className="mt-2 font-display text-[18px] leading-snug text-navy-900">
+                {p.timing}
+              </p>
+            </div>
+
+            <div className="sm:col-span-2">
+              <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-navy-700/70">
+                What you need
+              </div>
+              <ul className="mt-2.5 grid gap-1.5 sm:grid-cols-2">
+                {p.bullets.map((b) => (
+                  <li
+                    key={b}
+                    className="flex items-start gap-2.5 text-[14px] text-navy-900"
+                  >
+                    <span className="mt-1 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-navy-800 text-cream">
+                      <Check className="h-2.5 w-2.5" strokeWidth={3.5} />
+                    </span>
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <ProConList label="Pros" items={p.pros} tone="pro" />
+            <ProConList label="Watch out for" items={p.cons} tone="con" />
+          </div>
+
+          {/* Action row */}
+          <div className="mt-9 flex flex-wrap items-center justify-between gap-3 border-t border-navy-800/10 pt-6">
+            <div className="text-[12px] text-navy-700/80">
+              <span className="font-semibold text-navy-900">{p.cost}</span> ·
+              Reviewed by RCIC R522969
+            </div>
+            <button onClick={onCTA} className="btn-primary">
+              {p.ctaLabel} <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </motion.article>
   );
 }
 
-function ProConList({ label, items, tone }) {
-  const isPro = tone === "pro";
+function PaidPathway({ p, i, onCTA }) {
+  const Icon = p.icon;
   return (
-    <div className="rounded-xl border border-navy-800/10 bg-white p-3.5">
-      <div className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-navy-700/70">
+    <motion.article
+      id={`pathway-${p.n}`}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, delay: i * 0.04 }}
+      className="relative mt-16 scroll-mt-24 overflow-hidden rounded-[28px] bg-navy-900 px-8 py-12 text-cream shadow-lift sm:mt-20 sm:px-12 sm:py-14"
+    >
+      {/* Atmospheric decoration */}
+      <div className="pointer-events-none absolute -right-24 -top-24 h-[320px] w-[320px] rounded-full bg-gold-400/15 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-[280px] w-[280px] rounded-full bg-navy-600/40 blur-3xl" />
+
+      <div className="relative grid gap-10 lg:grid-cols-[180px_1fr_minmax(0,260px)] lg:gap-12">
+        <div className="flex items-start gap-6 lg:flex-col lg:items-start lg:gap-6">
+          <span
+            aria-hidden
+            className="font-display text-[88px] italic leading-none tracking-[-0.03em] text-gold-400 sm:text-[112px]"
+          >
+            {p.n}
+          </span>
+          <div className="flex items-center gap-3">
+            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gold-400 text-navy-900">
+              <Icon className="h-5 w-5" />
+            </span>
+            <div className="leading-tight">
+              <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-gold-400">
+                Premium
+              </div>
+              <div className="font-display text-[15px] text-cream">
+                {p.short}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="min-w-0">
+          <h3 className="font-display text-[28px] leading-[1.1] tracking-tight text-cream sm:text-[34px]">
+            {p.name}
+          </h3>
+
+          <blockquote className="mt-5 border-l-2 border-gold-400 pl-5 font-display text-[20px] italic leading-snug text-cream/90 sm:text-[24px]">
+            <span className="text-gold-400">“</span>
+            {p.pitch}
+            <span className="text-gold-400">”</span>
+          </blockquote>
+
+          <div className="mt-7">
+            <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-gold-400">
+              Best for
+            </div>
+            <p className="mt-2 text-[14.5px] leading-[1.6] text-cream/85">
+              {p.forWho}
+            </p>
+          </div>
+
+          <div className="mt-6">
+            <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-gold-400">
+              What we cover
+            </div>
+            <ul className="mt-2.5 grid gap-1.5 sm:grid-cols-1">
+              {p.bullets.map((b) => (
+                <li
+                  key={b}
+                  className="flex items-start gap-2.5 text-[14px] text-cream/95"
+                >
+                  <span className="mt-1 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-gold-400 text-navy-900">
+                    <Check className="h-2.5 w-2.5" strokeWidth={3.5} />
+                  </span>
+                  {b}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <ProConList label="Pros" items={p.pros} tone="pro" dark />
+            <ProConList label="Watch out for" items={p.cons} tone="con" dark />
+          </div>
+        </div>
+
+        {/* Price + CTA panel */}
+        <aside className="relative rounded-2xl border border-cream/15 bg-cream/5 p-6 backdrop-blur">
+          <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-gold-400">
+            Investment
+          </div>
+          <div className="mt-1 font-display text-[44px] italic leading-none text-gold-400 sm:text-[52px]">
+            $99
+          </div>
+          <div className="mt-1 text-[12.5px] font-semibold uppercase tracking-wider text-cream/70">
+            + GST · One-time
+          </div>
+
+          <div className="my-5 h-px w-full bg-cream/15" />
+
+          <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-gold-400">
+            Session length
+          </div>
+          <div className="mt-1 font-display text-[20px] leading-tight text-cream">
+            {p.timing}
+          </div>
+
+          <button onClick={onCTA} className="btn-gold mt-6 w-full">
+            {p.ctaLabel} <ArrowRight className="h-4 w-4" />
+          </button>
+          <div className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-cream/65">
+            <ShieldCheck className="h-3 w-3 text-gold-400" />
+            Licensed RCIC R522969
+          </div>
+        </aside>
+      </div>
+    </motion.article>
+  );
+}
+
+function ProConList({ label, items, tone, dark = false }) {
+  const isPro = tone === "pro";
+  const Icon = isPro ? Check : X;
+  return (
+    <div
+      className={`rounded-xl p-4 ${
+        dark
+          ? "border border-cream/15 bg-cream/5"
+          : "border border-navy-800/10 bg-white"
+      }`}
+    >
+      <div
+        className={`text-[10.5px] font-semibold uppercase tracking-[0.22em] ${
+          dark ? "text-gold-400" : "text-navy-700/70"
+        }`}
+      >
         {label}
       </div>
-      <ul className="mt-1.5 grid gap-1">
+      <ul className="mt-2 grid gap-1.5">
         {items.map((t) => (
           <li
             key={t}
-            className="flex items-start gap-1.5 text-[13px] leading-[1.45] text-navy-800"
+            className={`flex items-start gap-2 text-[13px] leading-[1.5] ${
+              dark ? "text-cream/90" : "text-navy-800"
+            }`}
           >
             <span
-              className={`mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full ${
-                isPro ? "bg-emerald-600" : "bg-rose-500"
+              className={`mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full ${
+                isPro
+                  ? "bg-emerald-100 text-emerald-700"
+                  : "bg-rose-100 text-rose-700"
               }`}
-            />
+            >
+              <Icon className="h-2.5 w-2.5" strokeWidth={3.5} />
+            </span>
             {t}
           </li>
         ))}
@@ -413,11 +622,13 @@ function ProConList({ label, items, tone }) {
   );
 }
 
+/* ──────────────────── Closing CTA ──────────────────── */
+
 function ClosingCTA({ onCTA }) {
   return (
     <section className="relative overflow-hidden bg-navy-900 py-20 text-cream sm:py-24">
-      <div className="pointer-events-none absolute -right-40 -top-20 h-[420px] w-[420px] rounded-full bg-gold-400/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -left-20 h-[360px] w-[360px] rounded-full bg-navy-600/30 blur-3xl" />
+      <div className="pointer-events-none absolute -right-40 -top-20 h-[440px] w-[440px] rounded-full bg-gold-400/15 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-[380px] w-[380px] rounded-full bg-navy-600/30 blur-3xl" />
 
       <div className="container-x relative text-center">
         <motion.div
@@ -426,14 +637,22 @@ function ClosingCTA({ onCTA }) {
           viewport={{ once: true }}
           className="mx-auto max-w-3xl"
         >
-          <h2 className="font-display text-[36px] leading-[1.05] tracking-tight text-cream sm:text-[52px]">
-            PGWP ending soon?{" "}
-            <span className="italic text-gold-400">Start planning now.</span>
+          <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-400">
+            <span className="h-px w-8 bg-gold-400/60" />
+            One last thing
+            <span className="h-px w-8 bg-gold-400/60" />
+          </div>
+
+          <h2 className="mt-5 font-display text-[38px] leading-[1.04] tracking-tight text-cream sm:text-[58px]">
+            The sooner you act,{" "}
+            <span className="italic text-gold-400">
+              the more doors stay open.
+            </span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-[15px] leading-[1.6] text-cream/80">
-            The sooner you act, the more pathways stay open to you. We'll
-            review your file in 15 minutes and tell you honestly which one
-            fits.
+            Fifteen minutes with a licensed RCIC. No documents. No obligation.
+            We'll tell you which of the five pathways actually fits — and what
+            to do this week to keep it open.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -448,7 +667,7 @@ function ClosingCTA({ onCTA }) {
             </a>
           </div>
 
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[12px] text-cream/65">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[12px] text-cream/65">
             <span className="inline-flex items-center gap-1.5">
               <ShieldCheck className="h-3.5 w-3.5 text-gold-400" /> RCIC R522969
             </span>
