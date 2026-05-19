@@ -66,7 +66,8 @@ function ReelsSwiper({ reels, onOpen }) {
         slidesPerView={1}
         breakpoints={{
           640: { slidesPerView: 2, spaceBetween: 18 },
-          1024: { slidesPerView: 3, spaceBetween: 20 },
+          1024: { slidesPerView: 3, spaceBetween: 18 },
+          1280: { slidesPerView: 4, spaceBetween: 20 },
         }}
         className="!pb-2"
       >
