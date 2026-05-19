@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, X } from "lucide-react";
+import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, A11y } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 import {
   REELS_BY_SERVICE,
   reelVideoSrc,
@@ -25,13 +29,11 @@ export default function Testimonials({ service }) {
             <span className="italic text-navy-700">home together.</span>
           </h2>
           <p className="mt-3 text-[15px] text-navy-700">
-            Real client videos · Real approvals.
+            {reels.length} client {reels.length === 1 ? "story" : "stories"} · Tap any to watch
           </p>
         </div>
 
-        {reels.length > 0 && (
-          <ReelsGrid reels={reels} onOpen={setOpenId} />
-        )}
+        <ReelsSwiper reels={reels} onOpen={setOpenId} />
       </div>
 
       <ReelLightbox openId={openId} onClose={() => setOpenId(null)} />
@@ -39,17 +41,41 @@ export default function Testimonials({ service }) {
   );
 }
 
-function ReelsGrid({ reels, onOpen }) {
+function ReelsSwiper({ reels, onOpen }) {
   return (
-    <div className="mt-10">
-      <p className="text-center text-[13px] text-navy-700/80">
-        {reels.length} client {reels.length === 1 ? "story" : "stories"} · Tap any to watch
-      </p>
-      <div className="mx-auto mt-6 grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div className="reels-swiper-wrap relative mt-10 px-2 sm:px-0">
+      <button
+        type="button"
+        className="reels-prev absolute left-0 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift sm:grid"
+        aria-label="Previous"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+      <button
+        type="button"
+        className="reels-next absolute right-0 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift sm:right-0 sm:translate-x-1/2 sm:grid"
+        aria-label="Next"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+
+      <Swiper
+        modules={[Navigation, A11y]}
+        navigation={{ prevEl: ".reels-prev", nextEl: ".reels-next" }}
+        spaceBetween={16}
+        slidesPerView={1}
+        breakpoints={{
+          640: { slidesPerView: 2, spaceBetween: 18 },
+          1024: { slidesPerView: 3, spaceBetween: 20 },
+        }}
+        className="!pb-2"
+      >
         {reels.map((id, i) => (
-          <ReelTile key={id} id={id} i={i} onPlay={() => onOpen(id)} />
+          <SwiperSlide key={id} className="!h-auto">
+            <ReelTile id={id} i={i} onPlay={() => onOpen(id)} />
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </div>
   );
 }
@@ -59,7 +85,7 @@ function ReelTile({ id, i, onPlay }) {
     <motion.button
       type="button"
       onClick={onPlay}
-      initial={{ opacity: 0, y: 14 }}
+      initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, delay: i * 0.05 }}
@@ -164,4 +190,3 @@ function ReelLightbox({ openId, onClose }) {
     </AnimatePresence>
   );
 }
-

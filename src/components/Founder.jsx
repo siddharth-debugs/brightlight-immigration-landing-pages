@@ -11,8 +11,13 @@ function LinkedInIcon(props) {
 }
 import { FOUNDER } from "../data";
 
-export default function Founder({ onCTA }) {
+export default function Founder({ onCTA, service }) {
   const [imgOk, setImgOk] = useState(true);
+  const f = service?.founder || {};
+  const pullQuote = f.pullQuote || FOUNDER.pullQuote;
+  const bio = f.bio || FOUNDER.bio;
+  const specialties = f.specialties || FOUNDER.specialties;
+  const tagline = f.tagline || FOUNDER.tagline;
   return (
     <section className="relative overflow-hidden bg-white py-20 sm:py-28">
       {/* Subtle editorial background */}
@@ -93,8 +98,7 @@ export default function Founder({ onCTA }) {
               className="mt-5 font-display text-[34px] leading-[1.05] tracking-tight text-navy-900 sm:text-[46px] lg:text-[52px]"
             >
               <span className="text-gold-400">“</span>
-              A spousal file is not paperwork. It is a family{" "}
-              <span className="italic">waiting at an airport.</span>
+              {pullQuote}
               <span className="text-gold-400">”</span>
             </motion.blockquote>
 
@@ -114,15 +118,15 @@ export default function Founder({ onCTA }) {
             </div>
 
             <p className="mt-6 font-display text-[19px] italic leading-snug text-navy-700 sm:text-[22px]">
-              {FOUNDER.tagline}
+              {tagline}
             </p>
 
             <p className="mt-5 max-w-xl text-[15.5px] leading-[1.65] text-navy-700">
-              {FOUNDER.bio}
+              {bio}
             </p>
 
             <ul className="mt-7 grid max-w-xl gap-2.5">
-              {FOUNDER.specialties.map((s) => (
+              {specialties.map((s) => (
                 <li
                   key={s}
                   className="flex items-start gap-3 text-[15px] text-navy-900"

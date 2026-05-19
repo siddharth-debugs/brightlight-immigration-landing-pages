@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, ArrowRight, ArrowLeft, Check, ShieldCheck, Lock } from "lucide-react";
+import {
+  X,
+  ArrowRight,
+  ArrowLeft,
+  Check,
+  ShieldCheck,
+  Lock,
+  Flame,
+  Clock,
+} from "lucide-react";
 
 const DEFAULT_STEPS = [
   {
@@ -8,7 +17,8 @@ const DEFAULT_STEPS = [
     q: "Which service do you need?",
     options: [
       { v: "spousal", l: "Spousal sponsorship" },
-      { v: "pgwp", l: "Post-Graduate Work Permit" },
+      { v: "pgwp", l: "PGWP expiring" },
+      { v: "work-permit", l: "Work permit expiring" },
       { v: "vulnerable", l: "Vulnerable Worker OWP" },
       { v: "francophone", l: "Francophone Mobility" },
       { v: "other", l: "Something else" },
@@ -16,12 +26,18 @@ const DEFAULT_STEPS = [
   },
 ];
 
+const TIME_SLOTS = [
+  { v: "asap", l: "Today (ASAP)" },
+  { v: "morning", l: "Morning (9am–12pm)" },
+  { v: "afternoon", l: "Afternoon (12pm–5pm)" },
+  { v: "evening", l: "Evening (5pm–9pm)" },
+];
+
 export default function InquiryModal({ open, onClose, service }) {
   const STEPS = service?.inquiry?.steps || DEFAULT_STEPS;
-  const serviceLabel = service?.inquiry?.serviceLabel || "your case";
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [contact, setContact] = useState({ name: "", phone: "" });
+  const [contact, setContact] = useState({ name: "", phone: "", time: "" });
   const [submitted, setSubmitted] = useState(false);
   const total = STEPS.length + 1;
 
@@ -78,6 +94,17 @@ export default function InquiryModal({ open, onClose, service }) {
             transition={{ type: "spring", damping: 22, stiffness: 220 }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Urgency strip */}
+            <div className="flex items-center justify-center gap-2 bg-red-600 px-4 py-2.5 text-center text-cream">
+              <Flame className="h-3.5 w-3.5 fill-cream text-cream" strokeWidth={0} />
+              <span className="text-[12.5px] font-semibold tracking-wide">
+                Only 3 free spots left this week
+                <span className="mx-2 text-cream/60">·</span>
+                <span className="line-through opacity-70">$50</span>{" "}
+                <span className="font-bold">FREE today</span>
+              </span>
+            </div>
+
             <div className="flex items-center justify-between border-b border-navy-800/10 bg-white/60 px-5 py-3">
               <div className="flex items-center gap-2.5">
                 <span className="grid h-6 w-6 place-items-center rounded-full bg-navy-800 text-cream">
@@ -103,7 +130,7 @@ export default function InquiryModal({ open, onClose, service }) {
               />
             </div>
 
-            <div className="px-6 py-7 sm:px-8 sm:py-8">
+            <div className="max-h-[70vh] overflow-y-auto px-6 py-7 sm:px-8 sm:py-8">
               {submitted ? (
                 <Success contact={contact} onClose={onClose} />
               ) : isContact ? (
@@ -216,7 +243,7 @@ function ContactStep({ contact, setContact, onSubmit, onBack }) {
         Where should we call you?
       </h3>
       <p className="mt-1.5 text-[13.5px] text-navy-700">
-        Free call within 24 hours. No spam.
+        Free 15-min call within 24 hours. No spam.
       </p>
 
       <div className="mt-6 grid gap-3">
@@ -242,6 +269,30 @@ function ContactStep({ contact, setContact, onSubmit, onBack }) {
             onChange={(e) => setContact({ ...contact, phone: e.target.value })}
           />
         </div>
+        <div>
+          <label className="label inline-flex items-center gap-1.5">
+            <Clock className="h-3.5 w-3.5 text-navy-700/70" /> Best time to call
+          </label>
+          <div className="mt-1.5 grid grid-cols-2 gap-2">
+            {TIME_SLOTS.map((t) => {
+              const isSel = contact.time === t.v;
+              return (
+                <button
+                  key={t.v}
+                  type="button"
+                  onClick={() => setContact({ ...contact, time: t.v })}
+                  className={`rounded-xl border px-3 py-2.5 text-left text-[13.5px] font-medium transition ${
+                    isSel
+                      ? "border-navy-800 bg-navy-800 text-cream"
+                      : "border-navy-800/15 bg-white text-navy-900 hover:border-navy-800/35"
+                  }`}
+                >
+                  {t.l}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       <div className="mt-6 flex items-center justify-between gap-3">
@@ -252,7 +303,11 @@ function ContactStep({ contact, setContact, onSubmit, onBack }) {
         >
           <ArrowLeft className="h-3.5 w-3.5" /> Back
         </button>
-        <button type="submit" className="btn-gold">
+        <button
+          type="submit"
+          disabled={!contact.time}
+          className="btn-gold disabled:cursor-not-allowed disabled:opacity-50"
+        >
           Reserve my slot <ArrowRight className="h-4 w-4" />
         </button>
       </div>
@@ -261,6 +316,7 @@ function ContactStep({ contact, setContact, onSubmit, onBack }) {
 }
 
 function Success({ contact, onClose }) {
+  const slot = TIME_SLOTS.find((t) => t.v === contact.time);
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
@@ -275,7 +331,18 @@ function Success({ contact, onClose }) {
       </h3>
       <p className="mx-auto mt-2 max-w-[380px] text-[14.5px] text-navy-700">
         We will call {contact.phone || "you"} within{" "}
-        <span className="font-semibold text-navy-900">24 hours</span>.
+        <span className="font-semibold text-navy-900">24 hours</span>
+        {slot ? (
+          <>
+            {" "}
+            during your{" "}
+            <span className="font-semibold text-navy-900">
+              {slot.l.toLowerCase()}
+            </span>{" "}
+            window
+          </>
+        ) : null}
+        .
       </p>
       <button onClick={onClose} className="btn-primary mt-6">
         Close

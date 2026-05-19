@@ -39,8 +39,8 @@ export default function ServicePage() {
       <main>
         <Hero service={service} onCTA={openModal} />
         <TrustStrip />
+        <Founder service={service} onCTA={openModal} />
         <Benefits service={service} onCTA={openModal} />
-        <Founder onCTA={openModal} />
         <Testimonials service={service} />
         <ClientReviews service={service} />
         <ServiceHighlights service={service} />

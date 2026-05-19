@@ -1,9 +1,18 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Quote, Star } from "lucide-react";
+import { Quote, Star, ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, A11y } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 import { REVIEWS_BY_SERVICE } from "../data";
+
+const MOBILE_PAGE = 3;
 
 export default function ClientReviews({ service }) {
   const reviews = (service && REVIEWS_BY_SERVICE[service.slug]) || [];
+  const [shown, setShown] = useState(MOBILE_PAGE);
+
   if (reviews.length === 0) return null;
 
   return (
@@ -22,10 +31,56 @@ export default function ClientReviews({ service }) {
           </p>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {reviews.map((r, i) => (
+        {/* Desktop: Swiper carousel showing 3 at a time */}
+        <div className="reviews-swiper-wrap relative mx-auto mt-12 hidden max-w-6xl px-12 lg:block">
+          <button
+            type="button"
+            className="reviews-prev absolute left-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
+            aria-label="Previous review"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            className="reviews-next absolute right-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
+            aria-label="Next review"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+
+          <Swiper
+            modules={[Navigation, A11y]}
+            navigation={{ prevEl: ".reviews-prev", nextEl: ".reviews-next" }}
+            slidesPerView={3}
+            spaceBetween={16}
+            className="!pb-2"
+          >
+            {reviews.map((r, i) => (
+              <SwiperSlide key={r.name} className="!h-auto">
+                <ReviewCard r={r} i={i} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* Mobile / tablet: 3 cards visible, "Load more" reveals next 3 */}
+        <div className="mx-auto mt-12 grid max-w-3xl gap-4 lg:hidden">
+          {reviews.slice(0, shown).map((r, i) => (
             <ReviewCard key={r.name} r={r} i={i} />
           ))}
+          {shown < reviews.length && (
+            <div className="mt-2 text-center">
+              <button
+                type="button"
+                onClick={() =>
+                  setShown((s) => Math.min(reviews.length, s + MOBILE_PAGE))
+                }
+                className="inline-flex items-center gap-1.5 rounded-full border border-navy-800/15 bg-cream px-5 py-2.5 text-[13px] font-semibold text-navy-900 transition hover:border-navy-800/35 hover:bg-white"
+              >
+                <Plus className="h-3.5 w-3.5" /> Load more reviews
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

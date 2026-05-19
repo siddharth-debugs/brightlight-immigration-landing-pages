@@ -50,6 +50,17 @@ export default {
       },
     ],
   },
+  founder: {
+    pullQuote:
+      "A spousal file is not paperwork. It is a family waiting at an airport.",
+    tagline: "Your trusted ally in Canadian spousal sponsorship.",
+    bio: "Licensed RCIC since 2014. Loveneet personally reviews every spousal file we take on — including the complicated ones other firms turn away.",
+    specialties: [
+      "Spousal sponsorship — inland & outland",
+      "Refusal overturns & GCMS appeals",
+      "Service in English, Punjabi & Hindi",
+    ],
+  },
   finalCTA: {
     title1: "Free 15-minute call.",
     italic: "Clearer next steps.",

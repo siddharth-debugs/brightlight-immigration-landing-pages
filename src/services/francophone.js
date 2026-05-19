@@ -81,6 +81,17 @@ export default {
     ],
     footnote: "Sources: IRCC · Francophone Mobility (updated July 2025)",
   },
+  founder: {
+    pullQuote:
+      "Your French isn't paperwork. It is a passport to almost every province.",
+    tagline: "Filing under Mobilité Francophone since the exemption began.",
+    bio: "Licensed RCIC since 2014. Loveneet files Francophone Mobility cases under exemption code C16 — confirming NCLC scores, structuring offers of employment, and securing the full 3-year permit.",
+    specialties: [
+      "LMIA exemption code C16 (Mobilité Francophone)",
+      "TEF / TCF Canada language documentation",
+      "Offers of employment via the Employer Portal",
+    ],
+  },
   finalCTA: {
     title1: "Your French is the key.",
     italic: "Use it well.",

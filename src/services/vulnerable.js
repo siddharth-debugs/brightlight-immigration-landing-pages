@@ -51,6 +51,17 @@ export default {
       },
     ],
   },
+  founder: {
+    pullQuote:
+      "A vulnerable worker file is not paperwork. It is dignity, restored.",
+    tagline: "Confidential help for workers facing abuse at their job.",
+    bio: "Licensed RCIC since 2014. Loveneet handles vulnerable worker applications with strict confidentiality — your employer is never contacted. PIPEDA-compliant intake from the first message.",
+    specialties: [
+      "Open Work Permit with IRCC fee waived",
+      "Officer-ready evidence of abuse or unsafe work",
+      "Maintained status while we file",
+    ],
+  },
   finalCTA: {
     title1: "A safer job",
     italic: "is one call away.",

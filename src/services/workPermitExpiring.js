@@ -51,6 +51,17 @@ export default {
       },
     ],
   },
+  founder: {
+    pullQuote:
+      "A closed work permit isn't a cage. It is one option among many.",
+    tagline: "For workers who think their only choice is to leave.",
+    bio: "Licensed RCIC since 2014. Loveneet specializes in helping workers on employer-specific permits understand every realistic option before their status runs out — extensions, LMIA-exempt switches, BOWP, and PR pathways.",
+    specialties: [
+      "Employer-specific permit extensions",
+      "LMIA-exempt switches under IMP",
+      "BOWP while waiting on PR",
+    ],
+  },
   finalCTA: {
     title1: "Your permit isn't the end.",
     italic: "Let's map what's next.",

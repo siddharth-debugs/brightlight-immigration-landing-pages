@@ -50,6 +50,17 @@ export default {
       },
     ],
   },
+  founder: {
+    pullQuote:
+      "Your PGWP isn't a deadline. It is a door to what comes next.",
+    tagline: "Mapping pathways for graduates whose permits are ending.",
+    bio: "Licensed RCIC since 2014. Loveneet has guided 1,000+ graduates through the transition after PGWP — BOWP, PNP, LMIA-based switches, and PR filings — including last-minute files most firms refuse.",
+    specialties: [
+      "BOWP filings while PR is in process",
+      "PNP nominations & LMIA-based switches",
+      "Restoration if status has already expired",
+    ],
+  },
   finalCTA: {
     title1: "Your PGWP isn't the end.",
     italic: "Let's map what's next.",
