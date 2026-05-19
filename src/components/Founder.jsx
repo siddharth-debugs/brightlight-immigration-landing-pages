@@ -95,7 +95,7 @@ export default function Founder({ onCTA, service }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="mt-5 font-display text-[34px] leading-[1.05] tracking-tight text-navy-900 sm:text-[46px] lg:text-[52px]"
+              className="mt-5 font-display text-[28px] leading-[1.1] tracking-tight text-navy-900 sm:text-[36px] lg:text-[42px]"
             >
               <span className="text-gold-400">“</span>
               {pullQuote}
