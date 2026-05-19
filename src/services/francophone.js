@@ -105,8 +105,8 @@ export default {
         options: [
           { v: "native", l: "Native speaker" },
           { v: "nclc5", l: "NCLC 5+ (TEF/TCF tested)" },
-          { v: "untested", l: "Fluent but untested" },
-          { v: "learning", l: "Still learning" },
+          { v: "fluent-or-learning", l: "Fluent but untested / Still learning" },
+          { v: "willing", l: "Don't know, but willing to test" },
         ],
       },
       {
@@ -122,9 +122,9 @@ export default {
         key: "offer",
         q: "Do you have a Canadian job offer?",
         options: [
-          { v: "yes", l: "Yes, signed" },
-          { v: "exploring", l: "Exploring offers" },
-          { v: "no", l: "No, planning ahead" },
+          { v: "yes", l: "Yes" },
+          { v: "looking", l: "Looking for a job" },
+          { v: "no", l: "No" },
         ],
       },
     ],
