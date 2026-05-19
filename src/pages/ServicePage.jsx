@@ -7,6 +7,7 @@ import TrustStrip from "../components/TrustStrip";
 import Benefits from "../components/Benefits";
 import Founder from "../components/Founder";
 import Testimonials from "../components/Testimonials";
+import ClientReviews from "../components/ClientReviews";
 import ServiceHighlights from "../components/ServiceHighlights";
 import FinalCTA from "../components/FinalCTA";
 import Footer from "../components/Footer";
@@ -41,6 +42,7 @@ export default function ServicePage() {
         <Benefits service={service} onCTA={openModal} />
         <Founder onCTA={openModal} />
         <Testimonials service={service} />
+        <ClientReviews service={service} />
         <ServiceHighlights service={service} />
         <FinalCTA service={service} onCTA={openModal} />
       </main>
