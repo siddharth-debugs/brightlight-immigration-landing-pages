@@ -14,7 +14,18 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
-const SITE_URL = process.env.SITE_URL || "https://www.brightlightimmigration.ca";
+// The static index.html hardcodes the canonical production origin so
+// the home preview is correct even without a build env override. When
+// SITE_URL points elsewhere (GH Pages staging, alternate domain), we
+// swap every hardcoded occurrence so OG/canonical resolve correctly.
+const DEFAULT_SITE_URL = "https://www.brightlightimmigration.ca";
+const SITE_URL = process.env.SITE_URL || DEFAULT_SITE_URL;
+
+function rewriteSiteUrl(html) {
+  if (SITE_URL === DEFAULT_SITE_URL) return html;
+  const target = SITE_URL.replace(/\/$/, "");
+  return html.split(DEFAULT_SITE_URL).join(target);
+}
 
 function ogImageFor(slug = "home") {
   // 1200x630 hero screenshots committed to public/og/{slug}.jpg.
@@ -112,7 +123,10 @@ const replacers = [
 ];
 
 async function main() {
-  const baseHtml = await fs.readFile(path.join(DIST, "index.html"), "utf8");
+  let baseHtml = await fs.readFile(path.join(DIST, "index.html"), "utf8");
+  baseHtml = rewriteSiteUrl(baseHtml);
+  // Write the home page back so its meta tags match the deploy host.
+  await fs.writeFile(path.join(DIST, "index.html"), baseHtml, "utf8");
   const servicesUrl = pathToFileURL(
     path.join(ROOT, "src", "services", "index.js")
   ).href;

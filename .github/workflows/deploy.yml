@@ -27,6 +27,12 @@ jobs:
       - name: Build
         env:
           BASE: /${{ github.event.repository.name }}/
+          # Absolute site origin for canonical + OG URLs. Pages serves
+          # us at github.io/<repo>/ — match that exactly so link
+          # previews resolve to deployed assets, not the production
+          # domain (which isn't pointed here yet).
+          SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+          VITE_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
         run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
