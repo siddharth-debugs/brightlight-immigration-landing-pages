@@ -5,7 +5,33 @@ import { BRAND } from "../data";
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL || "https://www.brightlightimmigration.ca";
 
-const DEFAULT_OG_IMAGE = BRAND.logo;
+// 1200x630 OG card built from the brand logo on a navy background via
+// Cloudinary on-the-fly transforms. Use this for any page that doesn't
+// supply its own custom card.
+export const DEFAULT_OG_IMAGE =
+  "https://res.cloudinary.com/dkqo3uz5o/image/upload/w_1200,h_630,c_pad,b_rgb:132f46,q_auto,f_jpg/v1776960199/brightlight-main-logo_amxfxh.webp";
+
+/**
+ * Build a 1200x630 OG card with the brand logo centered on a navy
+ * background and a single line of gold serif text near the bottom.
+ * Falls back to DEFAULT_OG_IMAGE for empty input.
+ */
+export function brandOgImage(title) {
+  if (!title) return DEFAULT_OG_IMAGE;
+  // Cloudinary text layer encoding: replace comma and slash since they
+  // have special meaning in transformation URLs.
+  const text = encodeURIComponent(title)
+    .replace(/,/g, "%252C")
+    .replace(/\//g, "%252F");
+  const overlay = `l_text:Georgia_56_bold:${text},co_rgb:e8c47c,c_fit,w_980,g_south,y_90`;
+  return (
+    "https://res.cloudinary.com/dkqo3uz5o/image/upload/" +
+    "w_1200,h_630,c_pad,b_rgb:132f46/" +
+    "c_scale,w_320,g_north,y_150/" +
+    `${overlay},q_auto,f_jpg/` +
+    "v1776960199/brightlight-main-logo_amxfxh.webp"
+  );
+}
 
 function setMeta(attr, key, value) {
   if (value == null || value === "") return;
@@ -53,6 +79,10 @@ export function setSEO({ title, description, path = "/", image, type }) {
   setMeta("property", "og:url", url);
   setMeta("property", "og:type", ogType);
   setMeta("property", "og:image", ogImage);
+  setMeta("property", "og:image:width", "1200");
+  setMeta("property", "og:image:height", "630");
+  setMeta("property", "og:image:type", "image/jpeg");
+  setMeta("property", "og:image:alt", title);
   setMeta("property", "og:site_name", BRAND.name);
   setMeta("property", "og:locale", "en_CA");
 
@@ -60,6 +90,7 @@ export function setSEO({ title, description, path = "/", image, type }) {
   setMeta("name", "twitter:title", title);
   setMeta("name", "twitter:description", description);
   setMeta("name", "twitter:image", ogImage);
+  setMeta("name", "twitter:image:alt", title);
 }
 
 /**

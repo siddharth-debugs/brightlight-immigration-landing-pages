@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import InquiryModal from "../components/InquiryModal";
 import { SERVICES } from "../services";
-import { setSEO, setJSONLD, SITE_URL } from "../lib/seo";
+import { setSEO, setJSONLD, SITE_URL, brandOgImage } from "../lib/seo";
 import { BRAND } from "../data";
 
 export default function IndexPage() {
@@ -22,6 +22,7 @@ export default function IndexPage() {
         "Licensed Canadian immigration consultants. Spousal sponsorship, PGWP transitions, work permit extensions, Francophone Mobility, and Vulnerable Worker OWP. Free 15-minute call with RCIC R522969.",
       path: "/",
       type: "website",
+      image: brandOgImage("Licensed Canadian Immigration Consultants"),
     });
 
     setJSONLD("ld-organization", {
