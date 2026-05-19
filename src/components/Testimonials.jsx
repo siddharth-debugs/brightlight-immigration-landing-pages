@@ -1,7 +1,12 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import { Star, Quote, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
-import { REELS_BY_SERVICE, REVIEWS } from "../data";
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  REELS_BY_SERVICE,
+  REVIEWS,
+  reelVideoSrc,
+  reelPosterSrc,
+} from "../data";
 
 export default function Testimonials({ service }) {
   const reels = (service && REELS_BY_SERVICE[service.slug]) || [];
@@ -18,7 +23,7 @@ export default function Testimonials({ service }) {
             <span className="italic text-navy-700">home together.</span>
           </h2>
           <p className="mt-3 text-[15px] text-navy-700">
-            Real reviews · Real client reels · Real approvals.
+            Real reviews · Real client videos · Real approvals.
           </p>
         </div>
 
@@ -42,7 +47,7 @@ function ReelsCarousel({ reels }) {
     const el = scrollerRef.current;
     if (!el) return;
     const card = el.querySelector("[data-reel-card]");
-    const step = card ? card.getBoundingClientRect().width + 20 : 360;
+    const step = card ? card.getBoundingClientRect().width + 20 : 320;
     el.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
@@ -58,7 +63,7 @@ function ReelsCarousel({ reels }) {
             <span className="italic text-navy-700">in their own words.</span>
           </h3>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 sm:flex">
           <button
             type="button"
             onClick={() => scrollBy(-1)}
@@ -79,9 +84,8 @@ function ReelsCarousel({ reels }) {
       </div>
 
       <div className="relative mt-7">
-        {/* Edge fades */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-white to-transparent" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-white to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-10 bg-gradient-to-r from-white to-transparent sm:block" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-10 bg-gradient-to-l from-white to-transparent sm:block" />
 
         <div
           ref={scrollerRef}
@@ -91,17 +95,6 @@ function ReelsCarousel({ reels }) {
             <PhoneCard key={id} id={id} i={i} />
           ))}
         </div>
-      </div>
-
-      <div className="mt-5 text-center">
-        <a
-          href="https://www.instagram.com/brightlightimmigration/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-navy-800/15 bg-cream px-4 py-2 text-[12.5px] font-semibold text-navy-900 transition hover:border-navy-800/35 hover:bg-white"
-        >
-          Watch more on Instagram <ExternalLink className="h-3 w-3" />
-        </a>
       </div>
     </div>
   );
@@ -115,19 +108,18 @@ function PhoneCard({ id, i }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: i * 0.04 }}
-      className="relative w-[300px] shrink-0 snap-center sm:w-[320px]"
+      className="relative w-[260px] shrink-0 snap-center sm:w-[280px]"
     >
-      <div className="rounded-[36px] bg-navy-900 p-2.5 shadow-lift ring-1 ring-navy-800/10">
-        <div className="pointer-events-none absolute left-1/2 top-3 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-cream/20" />
+      <div className="relative rounded-[36px] bg-navy-900 p-2 shadow-lift ring-1 ring-navy-800/10">
+        <div className="pointer-events-none absolute left-1/2 top-2.5 z-10 h-1.5 w-14 -translate-x-1/2 rounded-full bg-cream/20" />
         <div className="overflow-hidden rounded-[28px] bg-black">
-          <iframe
-            src={`https://www.instagram.com/reel/${id}/embed/`}
-            title={`Client reel ${id}`}
-            className="block h-[560px] w-full border-0"
-            loading="lazy"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            allowFullScreen
-            scrolling="no"
+          <video
+            src={reelVideoSrc(id)}
+            poster={reelPosterSrc(id)}
+            controls
+            playsInline
+            preload="metadata"
+            className="block aspect-[9/16] w-full bg-black object-cover"
           />
         </div>
       </div>

@@ -81,8 +81,19 @@ export const REVIEWS = [
   },
 ];
 
-// Instagram reel IDs per service slug. Embedded via
-// https://www.instagram.com/reel/{id}/embed/
+// Reels are hosted on Cloudinary (cloud: dkqo3uz5o, folder: brightlight/reels).
+// Source IDs match the original Instagram reel shortcodes for traceability.
+const CLOUDINARY_BASE =
+  "https://res.cloudinary.com/dkqo3uz5o/video/upload";
+
+export function reelVideoSrc(id) {
+  return `${CLOUDINARY_BASE}/q_auto,f_auto/brightlight/reels/${id}.mp4`;
+}
+
+export function reelPosterSrc(id) {
+  return `${CLOUDINARY_BASE}/so_1.0,w_640,c_fill,q_auto,f_jpg/brightlight/reels/${id}.jpg`;
+}
+
 export const REELS_BY_SERVICE = {
   "spousal-sponsorship": [
     "DTS_VWOE5dS",
