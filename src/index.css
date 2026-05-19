@@ -91,6 +91,21 @@
   }
 }
 
+/* Pathway slider pagination dots (/pgwp-options) */
+.pathway-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(19, 47, 70, 0.2);
+  cursor: pointer;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.pathway-dot-active {
+  width: 28px;
+  background: #d4a857;
+}
+
 /* Thin, themed scrollbar for in-modal scroll regions */
 .modal-scroll {
   scrollbar-width: thin;

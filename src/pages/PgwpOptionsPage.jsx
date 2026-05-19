@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, A11y } from "swiper/modules";
+import { Navigation, Pagination, A11y, Keyboard } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import {
   ArrowRight,
   Briefcase,
@@ -336,45 +337,76 @@ function PathwaysSection({ onCTA }) {
 }
 
 function PathwayTabsSlider({ active, onChange }) {
+  const swiperRef = useRef(null);
+  const activeIndex = Math.max(
+    0,
+    PATHWAYS.findIndex((p) => p.n === active)
+  );
+
+  // When the active pathway changes externally (e.g. on first mount),
+  // make sure the slider centers on it.
+  useEffect(() => {
+    const s = swiperRef.current;
+    if (!s) return;
+    if (typeof s.slideToLoop === "function") s.slideToLoop(activeIndex);
+    else s.slideTo(activeIndex);
+  }, [activeIndex]);
+
   return (
-    <div className="pathway-tabs-wrap relative mx-auto mt-12 max-w-5xl px-12">
+    <div className="pathway-tabs-wrap relative mx-auto mt-12 max-w-6xl">
       <button
         type="button"
-        className="pathway-prev absolute left-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
-        aria-label="Previous pathways"
+        className="pathway-prev absolute -left-2 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-lift transition hover:border-navy-800/35 hover:bg-cream sm:-left-5"
+        aria-label="Previous pathway"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
       <button
         type="button"
-        className="pathway-next absolute right-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
-        aria-label="Next pathways"
+        className="pathway-next absolute -right-2 top-1/2 z-10 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-lift transition hover:border-navy-800/35 hover:bg-cream sm:-right-5"
+        aria-label="Next pathway"
       >
         <ChevronRight className="h-4 w-4" />
       </button>
 
       <Swiper
-        modules={[Navigation, A11y]}
-        navigation={{ prevEl: ".pathway-prev", nextEl: ".pathway-next" }}
-        slidesPerView={1.2}
-        spaceBetween={14}
-        breakpoints={{
-          640: { slidesPerView: 2.2, spaceBetween: 16 },
-          900: { slidesPerView: 3, spaceBetween: 18 },
-          1200: { slidesPerView: 4, spaceBetween: 18 },
+        onSwiper={(s) => (swiperRef.current = s)}
+        onSlideChange={(s) => {
+          const idx = typeof s.realIndex === "number" ? s.realIndex : s.activeIndex;
+          const next = PATHWAYS[idx];
+          if (next && next.n !== active) onChange(next.n);
         }}
-        className="!pb-2"
+        modules={[Navigation, Pagination, A11y, Keyboard]}
+        navigation={{ prevEl: ".pathway-prev", nextEl: ".pathway-next" }}
+        pagination={{ el: ".pathway-dots", clickable: true, bulletClass: "pathway-dot", bulletActiveClass: "pathway-dot-active" }}
+        keyboard={{ enabled: true }}
+        loop
+        centeredSlides
+        slidesPerView={1.15}
+        spaceBetween={16}
+        speed={500}
+        initialSlide={activeIndex}
+        breakpoints={{
+          640: { slidesPerView: 1.8, spaceBetween: 20 },
+          900: { slidesPerView: 2.4, spaceBetween: 24 },
+          1200: { slidesPerView: 3, spaceBetween: 28 },
+        }}
+        className="!overflow-visible !px-2 !pb-3"
       >
         {PATHWAYS.map((p) => (
           <SwiperSlide key={p.n} className="!h-auto">
-            <PathwayTab
-              p={p}
-              active={p.n === active}
-              onClick={() => onChange(p.n)}
-            />
+            {({ isActive }) => (
+              <PathwayTab
+                p={p}
+                active={isActive}
+                onClick={() => onChange(p.n)}
+              />
+            )}
           </SwiperSlide>
         ))}
       </Swiper>
+
+      <div className="pathway-dots mt-6 flex items-center justify-center gap-2" />
     </div>
   );
 }
@@ -387,28 +419,28 @@ function PathwayTab({ p, active, onClick }) {
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`group flex h-[148px] w-full flex-col justify-between rounded-3xl border p-5 text-left transition-all ${
+      className={`group relative flex h-[220px] w-full flex-col justify-between rounded-[28px] border p-6 text-left transition-all duration-300 sm:h-[240px] ${
         active
           ? isPaid
-            ? "border-gold-400 bg-navy-900 text-cream shadow-lift"
-            : "border-navy-800 bg-white text-navy-900 shadow-lift"
-          : "border-navy-800/10 bg-white text-navy-900 hover:border-navy-800/30 hover:shadow-soft"
+            ? "scale-[1.02] border-gold-400 bg-navy-900 text-cream shadow-lift"
+            : "scale-[1.02] border-navy-800 bg-white text-navy-900 shadow-lift"
+          : "scale-[0.96] border-navy-800/10 bg-white/85 text-navy-900 opacity-70 hover:border-navy-800/30 hover:opacity-100 hover:shadow-soft"
       }`}
     >
       <div className="flex items-start justify-between">
         <span
-          className={`font-display text-[36px] italic leading-none ${
+          className={`font-display text-[64px] italic leading-none tracking-[-0.02em] ${
             active && isPaid
               ? "text-gold-400"
               : active
               ? "text-gold-500"
-              : "text-navy-700/70"
+              : "text-navy-700/40"
           }`}
         >
           {p.n}
         </span>
         <span
-          className={`grid h-9 w-9 place-items-center rounded-xl ${
+          className={`grid h-11 w-11 place-items-center rounded-2xl transition ${
             active && isPaid
               ? "bg-gold-400 text-navy-900"
               : active
@@ -416,29 +448,43 @@ function PathwayTab({ p, active, onClick }) {
               : "bg-cream text-navy-700"
           }`}
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-5 w-5" />
         </span>
       </div>
 
       <div>
         <div
-          className={`text-[10.5px] font-semibold uppercase tracking-[0.18em] ${
+          className={`text-[10.5px] font-semibold uppercase tracking-[0.22em] ${
             active && isPaid
               ? "text-gold-400"
               : active
               ? "text-navy-700"
-              : "text-navy-700/65"
+              : "text-navy-700/60"
           }`}
         >
           {isPaid ? "Premium" : "Pathway"}
         </div>
         <div
-          className={`mt-1 font-display text-[18px] leading-tight tracking-tight ${
+          className={`mt-1.5 font-display text-[22px] leading-tight tracking-tight sm:text-[24px] ${
             active && isPaid ? "text-cream" : "text-navy-900"
           }`}
         >
           {p.short}
         </div>
+        {active && (
+          <div
+            className={`mt-3 inline-flex items-center gap-1 text-[11.5px] font-semibold uppercase tracking-[0.18em] ${
+              isPaid ? "text-gold-400" : "text-navy-700"
+            }`}
+          >
+            Viewing details
+            <span
+              className={`ml-1 h-1 w-1 rounded-full ${
+                isPaid ? "bg-gold-400" : "bg-gold-500"
+              }`}
+            />
+          </div>
+        )}
       </div>
     </button>
   );
