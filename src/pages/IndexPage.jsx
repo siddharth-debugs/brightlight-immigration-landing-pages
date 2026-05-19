@@ -131,6 +131,33 @@ export default function IndexPage() {
                   </Link>
                 </motion.div>
               ))}
+
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: SERVICES.length * 0.05 }}
+              >
+                <Link
+                  to="/pgwp-options"
+                  className="group flex items-center justify-between gap-4 rounded-2xl border border-gold-400/50 bg-gold-50 px-6 py-5 transition hover:border-gold-500 hover:shadow-soft"
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-full bg-gold-400 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-navy-900">
+                        Alt version
+                      </span>
+                      <span className="font-display text-[20px] leading-tight text-navy-900 sm:text-[22px]">
+                        PGWP Expiring — 5 Pathways
+                      </span>
+                    </div>
+                    <div className="mt-1 text-[14px] text-navy-700">
+                      Editorial-style review variant of the PGWP-expiring page.
+                    </div>
+                  </div>
+                  <ArrowRight className="h-4 w-4 shrink-0 text-navy-700 transition group-hover:translate-x-0.5 group-hover:text-navy-900" />
+                </Link>
+              </motion.div>
             </div>
           </div>
         </section>

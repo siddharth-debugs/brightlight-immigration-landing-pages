@@ -122,6 +122,21 @@ const replacers = [
     ),
 ];
 
+// One-off custom routes outside the SERVICES array. Each entry is
+// effectively a hand-rolled landing page — the prerender still needs
+// to bake in its meta tags so crawlers see them.
+const EXTRA_ROUTES = [
+  {
+    slug: "pgwp-options",
+    title:
+      "PGWP Expiring? 5 Pathways to Stay in Canada | Brightlight Immigration",
+    description:
+      "Your PGWP is ending — or already has. Five realistic pathways to stay and work in Canada: LMIA-based permit, Francophone Mobility, study permit, visitor record, and a paid PR guidance session.",
+    // Reuse the existing pgwp hero screenshot until a dedicated one is captured.
+    imageSlug: "pgwp-expiring",
+  },
+];
+
 async function main() {
   let baseHtml = await fs.readFile(path.join(DIST, "index.html"), "utf8");
   baseHtml = rewriteSiteUrl(baseHtml);
@@ -132,23 +147,42 @@ async function main() {
   ).href;
   const { SERVICES } = await import(servicesUrl);
 
+  const routes = [
+    ...SERVICES.map((svc) => {
+      const meta = svc.meta || {};
+      return {
+        slug: svc.slug,
+        title: meta.title || `${svc.fullName} | Brightlight Immigration`,
+        description: meta.description || svc.tagline || "",
+        image: meta.image || ogImageFor(svc.slug),
+      };
+    }),
+    ...EXTRA_ROUTES.map((r) => ({
+      slug: r.slug,
+      title: r.title,
+      description: r.description,
+      image: r.image || ogImageFor(r.imageSlug || r.slug),
+    })),
+  ];
+
   let written = 0;
-  for (const svc of SERVICES) {
-    const meta = svc.meta || {};
-    const title = meta.title || `${svc.fullName} | Brightlight Immigration`;
-    const description = meta.description || svc.tagline || "";
-    const url = `${SITE_URL.replace(/\/$/, "")}/${svc.slug}`;
-    const image = meta.image || ogImageFor(svc.slug);
-    const ctx = { title, description, url, image };
+  for (const r of routes) {
+    const url = `${SITE_URL.replace(/\/$/, "")}/${r.slug}`;
+    const ctx = {
+      title: r.title,
+      description: r.description,
+      url,
+      image: r.image,
+    };
 
     let html = baseHtml;
     for (const fn of replacers) html = fn(html, ctx);
 
-    const outDir = path.join(DIST, svc.slug);
+    const outDir = path.join(DIST, r.slug);
     await fs.mkdir(outDir, { recursive: true });
     await fs.writeFile(path.join(outDir, "index.html"), html, "utf8");
     written++;
-    console.log(`  ✓ ${svc.slug}/index.html`);
+    console.log(`  ✓ ${r.slug}/index.html`);
   }
   console.log(`prerender-meta: wrote ${written} per-route HTML files`);
 }
