@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, A11y } from "swiper/modules";
+import { Navigation, A11y, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/autoplay";
 import {
   REELS_BY_SERVICE,
   reelVideoSrc,
@@ -60,10 +61,18 @@ function ReelsSwiper({ reels, onOpen }) {
       </button>
 
       <Swiper
-        modules={[Navigation, A11y]}
+        modules={[Navigation, A11y, Autoplay]}
         navigation={{ prevEl: ".reels-prev", nextEl: ".reels-next" }}
         spaceBetween={16}
         slidesPerView={1}
+        loop={reels.length > 4}
+        loopAdditionalSlides={2}
+        autoplay={{
+          delay: 4000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        speed={650}
         breakpoints={{
           640: { slidesPerView: 2, spaceBetween: 18 },
           1024: { slidesPerView: 3, spaceBetween: 18 },
