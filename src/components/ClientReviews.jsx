@@ -31,45 +31,41 @@ export default function ClientReviews({ service }) {
           </p>
         </div>
 
-        {/* Desktop: Swiper if > 3 reviews, otherwise a clean static 3-col grid */}
-        {reviews.length > 3 ? (
-          <div className="reviews-swiper-wrap relative mx-auto mt-12 hidden max-w-6xl px-12 lg:block">
-            <button
-              type="button"
-              className="reviews-prev absolute left-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
-              aria-label="Previous review"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              className="reviews-next absolute right-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
-              aria-label="Next review"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
+        {/* Desktop: always render as Swiper. Loop so arrows still
+            function when total === slidesPerView. */}
+        <div className="reviews-swiper-wrap relative mx-auto mt-12 hidden max-w-6xl px-12 lg:block">
+          <button
+            type="button"
+            className="reviews-prev absolute left-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
+            aria-label="Previous review"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            className="reviews-next absolute right-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
+            aria-label="Next review"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
 
-            <Swiper
-              modules={[Navigation, A11y]}
-              navigation={{ prevEl: ".reviews-prev", nextEl: ".reviews-next" }}
-              slidesPerView={3}
-              spaceBetween={16}
-              className="!pb-2"
-            >
-              {reviews.map((r, i) => (
-                <SwiperSlide key={r.name} className="!h-auto">
-                  <ReviewCard r={r} i={i} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        ) : (
-          <div className="mx-auto mt-12 hidden max-w-6xl gap-4 lg:grid lg:grid-cols-3">
+          <Swiper
+            modules={[Navigation, A11y]}
+            navigation={{ prevEl: ".reviews-prev", nextEl: ".reviews-next" }}
+            slidesPerView={Math.min(3, reviews.length)}
+            spaceBetween={16}
+            loop={reviews.length > 1}
+            loopAdditionalSlides={Math.max(1, reviews.length)}
+            speed={500}
+            className="!pb-2"
+          >
             {reviews.map((r, i) => (
-              <ReviewCard key={r.name} r={r} i={i} />
+              <SwiperSlide key={r.name} className="!h-auto">
+                <ReviewCard r={r} i={i} />
+              </SwiperSlide>
             ))}
-          </div>
-        )}
+          </Swiper>
+        </div>
 
         {/* Mobile / tablet: 3 cards visible, "Load more" reveals next 3 */}
         <div className="mx-auto mt-12 grid max-w-3xl gap-4 lg:hidden">
