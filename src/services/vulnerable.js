@@ -93,7 +93,7 @@ export default {
         options: [
           { v: "closed", l: "Closed (employer-specific)" },
           { v: "open", l: "Open work permit" },
-          { v: "expired", l: "Expired" },
+          { v: "expired", l: "Expired", skipToContact: true },
           { v: "unsure", l: "Not sure" },
         ],
       },
