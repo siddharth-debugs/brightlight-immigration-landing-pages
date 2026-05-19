@@ -16,15 +16,10 @@ const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
 const SITE_URL = process.env.SITE_URL || "https://www.brightlightimmigration.ca";
 
-function brandOgImage() {
-  // 1200x630 OG card: brand logo scaled to a sensible size and centered
-  // on a navy canvas. Same definition as src/lib/seo.js -- kept in sync.
-  return (
-    "https://res.cloudinary.com/dkqo3uz5o/image/upload/" +
-    "c_scale,w_640/" +
-    "c_pad,w_1200,h_630,b_rgb:132f46,q_auto,f_jpg/" +
-    "v1776960199/brightlight-main-logo_amxfxh.webp"
-  );
+function ogImageFor(slug = "home") {
+  // 1200x630 hero screenshots committed to public/og/{slug}.jpg.
+  // Same definition as src/lib/seo.js — kept in sync.
+  return `${SITE_URL.replace(/\/$/, "")}/og/${slug}.jpg`;
 }
 
 function escapeAttr(s) {
@@ -129,7 +124,7 @@ async function main() {
     const title = meta.title || `${svc.fullName} | Brightlight Immigration`;
     const description = meta.description || svc.tagline || "";
     const url = `${SITE_URL.replace(/\/$/, "")}/${svc.slug}`;
-    const image = meta.image || brandOgImage(svc.fullName);
+    const image = meta.image || ogImageFor(svc.slug);
     const ctx = { title, description, url, image };
 
     let html = baseHtml;

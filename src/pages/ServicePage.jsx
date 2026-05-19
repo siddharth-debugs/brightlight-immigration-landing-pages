@@ -13,7 +13,7 @@ import FinalCTA from "../components/FinalCTA";
 import Footer from "../components/Footer";
 import InquiryModal from "../components/InquiryModal";
 import StickyMobileCTA from "../components/StickyMobileCTA";
-import { setSEO, setJSONLD, SITE_URL, brandOgImage } from "../lib/seo";
+import { setSEO, setJSONLD, SITE_URL, ogImageFor } from "../lib/seo";
 import { BRAND } from "../data";
 
 export default function ServicePage() {
@@ -29,7 +29,7 @@ export default function ServicePage() {
         title: service.meta.title,
         description: service.meta.description,
         path: `/${service.slug}`,
-        image: service.meta.image || brandOgImage(service.fullName),
+        image: service.meta.image || ogImageFor(service.slug),
         type: "article",
       });
 

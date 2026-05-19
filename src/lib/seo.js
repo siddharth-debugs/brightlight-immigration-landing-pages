@@ -5,22 +5,27 @@ import { BRAND } from "../data";
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL || "https://www.brightlightimmigration.ca";
 
-// 1200x630 OG card: brand logo scaled to a sensible size and centered
-// on a navy canvas. No per-page text overlay — the link unfurl looked
-// noisy when crawlers compressed the text.
-export const DEFAULT_OG_IMAGE =
-  "https://res.cloudinary.com/dkqo3uz5o/image/upload/" +
-  "c_scale,w_640/" +
-  "c_pad,w_1200,h_630,b_rgb:132f46,q_auto,f_jpg/" +
-  "v1776960199/brightlight-main-logo_amxfxh.webp";
+// 1200x630 hero screenshots committed to public/og/{slug}.jpg, captured
+// from the actual rendered pages. Use ogImageFor(slug) for any route,
+// or the constant DEFAULT_OG_IMAGE for fallback.
+function joinBase(...parts) {
+  return parts
+    .map((p, i) => (i === 0 ? p.replace(/\/$/, "") : p.replace(/^\/|\/$/g, "")))
+    .filter(Boolean)
+    .join("/");
+}
 
-/**
- * Returns the brand OG card. Title arg is accepted for API compatibility
- * (so callers don't need to change) but is no longer rendered onto the
- * image — it's still used for og:image:alt elsewhere.
- */
-export function brandOgImage(_title) {
-  return DEFAULT_OG_IMAGE;
+export function ogImageFor(slug = "home") {
+  // Absolute URL is required by most social crawlers.
+  return joinBase(SITE_URL, "og", `${slug}.jpg`);
+}
+
+export const DEFAULT_OG_IMAGE = ogImageFor("home");
+
+// Backwards-compatible alias: older callers passed a title, but the
+// argument is now expected to be a service slug.
+export function brandOgImage(slugOrTitle) {
+  return ogImageFor(slugOrTitle || "home");
 }
 
 function setMeta(attr, key, value) {
