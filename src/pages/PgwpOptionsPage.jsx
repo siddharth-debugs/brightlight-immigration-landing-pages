@@ -382,7 +382,6 @@ function PathwayTabsSlider({ active, onChange }) {
           bulletActiveClass: "pathway-dot-active",
         }}
         keyboard={{ enabled: true }}
-        centeredSlides
         slideToClickedSlide
         slidesPerView={1.3}
         spaceBetween={14}
