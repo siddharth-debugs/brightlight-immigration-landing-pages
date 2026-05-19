@@ -67,7 +67,13 @@ export default function InquiryModal({ open, onClose, service }) {
 
   function pickSingle(stepDef, value) {
     setAnswers((a) => ({ ...a, [stepDef.key]: value }));
-    setTimeout(() => setStep((s) => s + 1), 160);
+    const picked = (stepDef.options || []).find((o) => o.v === value);
+    setTimeout(() => {
+      // If the picked option marks this lead as ineligible, skip the
+      // remaining qualifying questions and jump straight to contact.
+      if (picked?.ineligible) setStep(STEPS.length);
+      else setStep((s) => s + 1);
+    }, 160);
   }
 
   function toggleMulti(stepDef, value) {
