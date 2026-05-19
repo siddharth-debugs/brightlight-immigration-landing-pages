@@ -168,7 +168,7 @@ export default function InquiryModal({ open, onClose, service }) {
               />
             </div>
 
-            <div className="max-h-[70vh] overflow-y-auto px-6 py-7 sm:px-8 sm:py-8">
+            <div className="modal-scroll max-h-[70vh] overflow-y-auto px-6 py-7 sm:px-8 sm:py-8">
               {submitted ? (
                 ineligible ? (
                   <Ineligible
