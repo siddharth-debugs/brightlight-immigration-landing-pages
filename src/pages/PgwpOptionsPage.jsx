@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, A11y } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 import {
   ArrowRight,
   Briefcase,
@@ -11,6 +15,8 @@ import {
   ShieldCheck,
   Check,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -62,7 +68,7 @@ const PATHWAYS = [
   },
   {
     n: "03",
-    short: "Study",
+    short: "Study Permit",
     name: "Study Permit",
     icon: GraduationCap,
     pitch:
@@ -85,7 +91,7 @@ const PATHWAYS = [
   },
   {
     n: "04",
-    short: "Visitor",
+    short: "Visitor Record",
     name: "Visitor Record",
     icon: Clock3,
     pitch:
@@ -196,7 +202,6 @@ export default function PgwpOptionsPage() {
 
       <main>
         <HeroSection onCTA={openModal} />
-        <PathwayIndex />
         <PathwaysSection onCTA={openModal} />
         <ClosingCTA onCTA={openModal} />
       </main>
@@ -260,8 +265,7 @@ function HeroSection({ onCTA }) {
             <span className="font-semibold text-navy-900">
               five realistic pathways
             </span>{" "}
-            to stay and work in Canada. We'll walk you through the one that
-            fits your file.
+            to stay and work in Canada. Pick one below to see the details.
           </motion.p>
 
           <motion.div
@@ -288,44 +292,12 @@ function HeroSection({ onCTA }) {
   );
 }
 
-/* ──────────────────── Pathway compass ──────────────────── */
-
-function PathwayIndex() {
-  return (
-    <section className="border-y border-navy-800/10 bg-cream py-8">
-      <div className="container-x">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-4 flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-navy-700/70">
-            <span className="h-px w-8 bg-gold-500" />
-            Five doorways
-            <span className="h-px w-8 bg-gold-500" />
-          </div>
-          <ul className="grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-3 lg:grid-cols-5">
-            {PATHWAYS.map((p) => (
-              <li key={p.n}>
-                <a
-                  href={`#pathway-${p.n}`}
-                  className="group flex h-full items-center gap-2.5 rounded-xl border border-navy-800/8 bg-white px-3 py-2.5 transition hover:border-navy-800/25 hover:shadow-soft"
-                >
-                  <span className="font-mono text-[11px] font-semibold text-navy-700/70">
-                    {p.n}
-                  </span>
-                  <span className="text-[12.5px] font-semibold text-navy-900 group-hover:text-navy-900">
-                    {p.short}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────── Pathways list ─────────────────── */
+/* ─────────────── Pathways: tabs + single panel ─────────────── */
 
 function PathwaysSection({ onCTA }) {
+  const [activeN, setActiveN] = useState(PATHWAYS[0].n);
+  const active = PATHWAYS.find((p) => p.n === activeN) || PATHWAYS[0];
+
   return (
     <section className="bg-cream py-16 sm:py-24">
       <div className="container-x">
@@ -338,37 +310,151 @@ function PathwaysSection({ onCTA }) {
             <span className="italic text-navy-700">in plain English.</span>
           </h2>
           <p className="mt-3 text-[14.5px] leading-[1.6] text-navy-700">
-            Each has a different timeline, cost, and qualification bar. We'll
-            match you to the right one on the call — and tell you honestly if
-            none of them fit.
+            Tap a pathway to see how it works, what you need, and whether it
+            fits your file.
           </p>
         </div>
 
-        <div className="mx-auto mt-16 max-w-5xl">
-          {PATHWAYS.map((p, i) => (
-            <Pathway key={p.n} p={p} i={i} onCTA={onCTA} />
-          ))}
+        <PathwayTabsSlider active={activeN} onChange={setActiveN} />
+
+        <div className="mx-auto mt-10 max-w-5xl">
+          <AnimatePresence mode="wait">
+            {active.paid ? (
+              <PaidPathwayPanel
+                key={active.n}
+                p={active}
+                onCTA={onCTA}
+              />
+            ) : (
+              <PathwayPanel key={active.n} p={active} onCTA={onCTA} />
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>
   );
 }
 
-function Pathway({ p, i, onCTA }) {
-  if (p.paid) return <PaidPathway p={p} i={i} onCTA={onCTA} />;
-  const Icon = p.icon;
+function PathwayTabsSlider({ active, onChange }) {
+  return (
+    <div className="pathway-tabs-wrap relative mx-auto mt-12 max-w-5xl px-12">
+      <button
+        type="button"
+        className="pathway-prev absolute left-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
+        aria-label="Previous pathways"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+      <button
+        type="button"
+        className="pathway-next absolute right-0 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-navy-800/15 bg-white text-navy-900 shadow-soft transition hover:border-navy-800/35 hover:shadow-lift"
+        aria-label="Next pathways"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
 
+      <Swiper
+        modules={[Navigation, A11y]}
+        navigation={{ prevEl: ".pathway-prev", nextEl: ".pathway-next" }}
+        slidesPerView={1.2}
+        spaceBetween={14}
+        breakpoints={{
+          640: { slidesPerView: 2.2, spaceBetween: 16 },
+          900: { slidesPerView: 3, spaceBetween: 18 },
+          1200: { slidesPerView: 4, spaceBetween: 18 },
+        }}
+        className="!pb-2"
+      >
+        {PATHWAYS.map((p) => (
+          <SwiperSlide key={p.n} className="!h-auto">
+            <PathwayTab
+              p={p}
+              active={p.n === active}
+              onClick={() => onChange(p.n)}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+}
+
+function PathwayTab({ p, active, onClick }) {
+  const Icon = p.icon;
+  const isPaid = p.paid;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`group flex h-[148px] w-full flex-col justify-between rounded-3xl border p-5 text-left transition-all ${
+        active
+          ? isPaid
+            ? "border-gold-400 bg-navy-900 text-cream shadow-lift"
+            : "border-navy-800 bg-white text-navy-900 shadow-lift"
+          : "border-navy-800/10 bg-white text-navy-900 hover:border-navy-800/30 hover:shadow-soft"
+      }`}
+    >
+      <div className="flex items-start justify-between">
+        <span
+          className={`font-display text-[36px] italic leading-none ${
+            active && isPaid
+              ? "text-gold-400"
+              : active
+              ? "text-gold-500"
+              : "text-navy-700/70"
+          }`}
+        >
+          {p.n}
+        </span>
+        <span
+          className={`grid h-9 w-9 place-items-center rounded-xl ${
+            active && isPaid
+              ? "bg-gold-400 text-navy-900"
+              : active
+              ? "bg-navy-800 text-cream"
+              : "bg-cream text-navy-700"
+          }`}
+        >
+          <Icon className="h-4 w-4" />
+        </span>
+      </div>
+
+      <div>
+        <div
+          className={`text-[10.5px] font-semibold uppercase tracking-[0.18em] ${
+            active && isPaid
+              ? "text-gold-400"
+              : active
+              ? "text-navy-700"
+              : "text-navy-700/65"
+          }`}
+        >
+          {isPaid ? "Premium" : "Pathway"}
+        </div>
+        <div
+          className={`mt-1 font-display text-[18px] leading-tight tracking-tight ${
+            active && isPaid ? "text-cream" : "text-navy-900"
+          }`}
+        >
+          {p.short}
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function PathwayPanel({ p, onCTA }) {
+  const Icon = p.icon;
   return (
     <motion.article
-      id={`pathway-${p.n}`}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: i * 0.04 }}
-      className="relative scroll-mt-24 border-t border-navy-800/10 pt-16 first:border-t-0 first:pt-0 sm:pt-20"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
+      className="rounded-[28px] border border-navy-800/10 bg-white p-8 shadow-soft sm:p-12"
     >
       <div className="grid gap-10 lg:grid-cols-[180px_1fr] lg:gap-16">
-        {/* Chapter mark */}
         <div className="flex items-start gap-6 lg:flex-col lg:items-start lg:gap-6">
           <span
             aria-hidden
@@ -391,20 +477,17 @@ function Pathway({ p, i, onCTA }) {
           </div>
         </div>
 
-        {/* Body */}
         <div className="min-w-0">
           <h3 className="font-display text-[28px] leading-[1.1] tracking-tight text-navy-900 sm:text-[34px]">
             {p.name}
           </h3>
 
-          {/* Pull-quote pitch */}
           <blockquote className="mt-5 border-l-2 border-gold-400 pl-5 font-display text-[20px] italic leading-snug text-navy-800 sm:text-[24px]">
             <span className="text-gold-400">“</span>
             {p.pitch}
             <span className="text-gold-400">”</span>
           </blockquote>
 
-          {/* Detail grid */}
           <div className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
             <div>
               <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-navy-700/70">
@@ -446,7 +529,6 @@ function Pathway({ p, i, onCTA }) {
             <ProConList label="Watch out for" items={p.cons} tone="con" />
           </div>
 
-          {/* Action row */}
           <div className="mt-9 flex flex-wrap items-center justify-between gap-3 border-t border-navy-800/10 pt-6">
             <div className="text-[12px] text-navy-700/80">
               <span className="font-semibold text-navy-900">{p.cost}</span> ·
@@ -462,18 +544,16 @@ function Pathway({ p, i, onCTA }) {
   );
 }
 
-function PaidPathway({ p, i, onCTA }) {
+function PaidPathwayPanel({ p, onCTA }) {
   const Icon = p.icon;
   return (
     <motion.article
-      id={`pathway-${p.n}`}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: i * 0.04 }}
-      className="relative mt-16 scroll-mt-24 overflow-hidden rounded-[28px] bg-navy-900 px-8 py-12 text-cream shadow-lift sm:mt-20 sm:px-12 sm:py-14"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
+      className="relative overflow-hidden rounded-[28px] bg-navy-900 p-8 text-cream shadow-lift sm:p-12"
     >
-      {/* Atmospheric decoration */}
       <div className="pointer-events-none absolute -right-24 -top-24 h-[320px] w-[320px] rounded-full bg-gold-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -left-24 h-[280px] w-[280px] rounded-full bg-navy-600/40 blur-3xl" />
 
@@ -524,7 +604,7 @@ function PaidPathway({ p, i, onCTA }) {
             <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-gold-400">
               What we cover
             </div>
-            <ul className="mt-2.5 grid gap-1.5 sm:grid-cols-1">
+            <ul className="mt-2.5 grid gap-1.5">
               {p.bullets.map((b) => (
                 <li
                   key={b}
@@ -545,7 +625,6 @@ function PaidPathway({ p, i, onCTA }) {
           </div>
         </div>
 
-        {/* Price + CTA panel */}
         <aside className="relative rounded-2xl border border-cream/15 bg-cream/5 p-6 backdrop-blur">
           <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-gold-400">
             Investment
@@ -587,7 +666,7 @@ function ProConList({ label, items, tone, dark = false }) {
       className={`rounded-xl p-4 ${
         dark
           ? "border border-cream/15 bg-cream/5"
-          : "border border-navy-800/10 bg-white"
+          : "border border-navy-800/10 bg-cream"
       }`}
     >
       <div
