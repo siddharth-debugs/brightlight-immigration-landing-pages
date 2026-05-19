@@ -91,7 +91,7 @@ export function reelVideoSrc(id) {
 }
 
 export function reelPosterSrc(id) {
-  return `${CLOUDINARY_BASE}/so_1.0,w_640,c_fill,q_auto,f_jpg/brightlight/reels/${id}.jpg`;
+  return `${CLOUDINARY_BASE}/so_2,w_720,h_1280,c_fill,g_auto,q_auto,f_jpg/brightlight/reels/${id}.jpg`;
 }
 
 export const REELS_BY_SERVICE = {

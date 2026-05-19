@@ -1,13 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Star,
-  Quote,
-  ChevronLeft,
-  ChevronRight,
-  Play,
-  X,
-} from "lucide-react";
+import { Star, Quote, Play, X } from "lucide-react";
 import {
   REELS_BY_SERVICE,
   REVIEWS,
@@ -20,10 +13,10 @@ export default function Testimonials({ service }) {
   const [openId, setOpenId] = useState(null);
 
   return (
-    <section className="relative bg-white py-20 sm:py-24">
+    <section className="relative bg-cream py-20 sm:py-28">
       <div className="container-x">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="eyebrow">
+          <span className="eyebrow justify-center">
             <span className="h-1 w-6 bg-gold-500" /> Real stories
           </span>
           <h2 className="mt-4 font-display text-[34px] leading-[1.05] tracking-tight text-navy-900 sm:text-[44px]">
@@ -42,7 +35,7 @@ export default function Testimonials({ service }) {
         </div>
 
         {reels.length > 0 && (
-          <ReelsCarousel reels={reels} onOpen={setOpenId} />
+          <ReelsGrid reels={reels} onOpen={setOpenId} />
         )}
       </div>
 
@@ -51,66 +44,27 @@ export default function Testimonials({ service }) {
   );
 }
 
-function ReelsCarousel({ reels, onOpen }) {
-  const scrollerRef = useRef(null);
-
-  const scrollBy = (dir) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const card = el.querySelector("[data-reel-card]");
-    const step = card ? card.getBoundingClientRect().width + 16 : 220;
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
-  };
-
+function ReelsGrid({ reels, onOpen }) {
   return (
-    <div className="mt-16">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="max-w-xl">
-          <span className="eyebrow">
-            <span className="h-1 w-6 bg-gold-500" /> Watch real clients
-          </span>
-          <h3 className="mt-3 font-display text-[26px] leading-tight tracking-tight text-navy-900 sm:text-[32px]">
-            Approval stories,{" "}
-            <span className="italic text-navy-700">in their own words.</span>
-          </h3>
-        </div>
-        <div className="hidden items-center gap-2 sm:flex">
-          <button
-            type="button"
-            onClick={() => scrollBy(-1)}
-            aria-label="Previous reels"
-            className="grid h-10 w-10 place-items-center rounded-full border border-navy-800/15 bg-cream text-navy-900 transition hover:border-navy-800/35 hover:bg-white"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollBy(1)}
-            aria-label="Next reels"
-            className="grid h-10 w-10 place-items-center rounded-full border border-navy-800/15 bg-cream text-navy-900 transition hover:border-navy-800/35 hover:bg-white"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
+    <div className="mt-20">
+      <div className="mx-auto max-w-2xl text-center">
+        <span className="eyebrow justify-center">
+          <Play className="h-3 w-3 fill-gold-500 text-gold-500" />
+          Approval stories
+        </span>
+        <h3 className="mt-3 font-display text-[28px] leading-[1.05] tracking-tight text-navy-900 sm:text-[36px]">
+          In their{" "}
+          <span className="italic text-navy-700">own words.</span>
+        </h3>
+        <p className="mt-3 text-[14px] text-navy-700">
+          {reels.length} client {reels.length === 1 ? "story" : "stories"} · Tap any to watch
+        </p>
       </div>
 
-      <div className="relative mt-7">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-10 bg-gradient-to-r from-white to-transparent sm:block" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-10 bg-gradient-to-l from-white to-transparent sm:block" />
-
-        <div
-          ref={scrollerRef}
-          className="scrollbar-none flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none]"
-        >
-          {reels.map((id, i) => (
-            <ReelTile
-              key={id}
-              id={id}
-              i={i}
-              onPlay={() => onOpen(id)}
-            />
-          ))}
-        </div>
+      <div className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {reels.map((id, i) => (
+          <ReelTile key={id} id={id} i={i} onPlay={() => onOpen(id)} />
+        ))}
       </div>
     </div>
   );
@@ -119,26 +73,41 @@ function ReelsCarousel({ reels, onOpen }) {
 function ReelTile({ id, i, onPlay }) {
   return (
     <motion.button
-      data-reel-card
       type="button"
       onClick={onPlay}
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.4, delay: i * 0.04 }}
-      className="group relative aspect-[9/16] w-[180px] shrink-0 snap-center overflow-hidden rounded-2xl bg-navy-900 ring-1 ring-navy-800/10 transition hover:ring-2 hover:ring-gold-400 sm:w-[200px]"
-      aria-label="Play client reel"
+      transition={{ duration: 0.45, delay: i * 0.05 }}
+      whileHover={{ y: -4 }}
+      className="group relative aspect-[9/16] w-full overflow-hidden rounded-3xl bg-navy-900 shadow-soft ring-1 ring-navy-800/10 transition-shadow hover:shadow-lift"
+      aria-label="Play client story"
     >
       <img
         src={reelPosterSrc(id)}
         alt=""
         loading="lazy"
-        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-navy-950/15" />
+      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/75 via-navy-950/10 to-navy-950/20" />
+
       <div className="absolute inset-0 grid place-items-center">
-        <span className="grid h-14 w-14 place-items-center rounded-full bg-gold-400 text-navy-900 shadow-lift transition group-hover:scale-110">
-          <Play className="h-5 w-5 fill-navy-900" strokeWidth={0} />
+        <span className="relative grid h-14 w-14 place-items-center rounded-full bg-white/95 text-navy-900 shadow-lift transition duration-300 group-hover:scale-110 group-hover:bg-white sm:h-16 sm:w-16">
+          <span className="absolute inset-0 rounded-full ring-2 ring-gold-400/0 transition group-hover:ring-gold-400/80" />
+          <Play
+            className="ml-0.5 h-5 w-5 fill-navy-900 sm:h-6 sm:w-6"
+            strokeWidth={0}
+          />
+        </span>
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 px-3 pb-3 text-cream">
+        <span className="inline-flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-cream/85">
+          <span className="h-1 w-1 rounded-full bg-gold-400" />
+          Client reel
+        </span>
+        <span className="text-[10.5px] font-mono text-cream/70">
+          #{String(i + 1).padStart(2, "0")}
         </span>
       </div>
     </motion.button>
@@ -225,7 +194,7 @@ function ReviewCard({ r, i }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, delay: i * 0.06 }}
-      className="rounded-2xl border border-navy-800/10 bg-cream p-6"
+      className="rounded-2xl border border-navy-800/10 bg-white p-6"
     >
       <div className="flex items-start justify-between">
         <Quote className="h-5 w-5 text-gold-400" />
