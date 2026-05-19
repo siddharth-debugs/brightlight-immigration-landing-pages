@@ -9,7 +9,10 @@ import {
   Lock,
   Flame,
   Clock,
+  AlertCircle,
 } from "lucide-react";
+import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const DEFAULT_STEPS = [
   {
@@ -61,13 +64,29 @@ export default function InquiryModal({ open, onClose, service }) {
     };
   }, [open, onClose]);
 
-  function pick(stepDef, value) {
+  function pickSingle(stepDef, value) {
     setAnswers((a) => ({ ...a, [stepDef.key]: value }));
     setTimeout(() => setStep((s) => s + 1), 160);
   }
 
+  function toggleMulti(stepDef, value) {
+    setAnswers((a) => {
+      const current = Array.isArray(a[stepDef.key]) ? a[stepDef.key] : [];
+      const next = current.includes(value)
+        ? current.filter((v) => v !== value)
+        : [...current, value];
+      return { ...a, [stepDef.key]: next };
+    });
+  }
+
+  function setFreeText(stepDef, value) {
+    if (!stepDef.freeText?.key) return;
+    setAnswers((a) => ({ ...a, [stepDef.freeText.key]: value }));
+  }
+
   function submit(e) {
     e.preventDefault();
+    if (!isPossiblePhoneNumber(contact.phone || "")) return;
     setSubmitted(true);
   }
 
@@ -94,7 +113,6 @@ export default function InquiryModal({ open, onClose, service }) {
             transition={{ type: "spring", damping: 22, stiffness: 220 }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Urgency strip */}
             <div className="flex items-center justify-center gap-2 bg-red-600 px-4 py-2.5 text-center text-cream">
               <Flame className="h-3.5 w-3.5 fill-cream text-cream" strokeWidth={0} />
               <span className="text-[12.5px] font-semibold tracking-wide">
@@ -145,8 +163,11 @@ export default function InquiryModal({ open, onClose, service }) {
                   step={STEPS[step]}
                   index={step}
                   total={STEPS.length + 1}
-                  selected={answers[STEPS[step].key]}
-                  onPick={(v) => pick(STEPS[step], v)}
+                  answers={answers}
+                  onPickSingle={(v) => pickSingle(STEPS[step], v)}
+                  onToggleMulti={(v) => toggleMulti(STEPS[step], v)}
+                  onFreeText={(v) => setFreeText(STEPS[step], v)}
+                  onNext={() => setStep((s) => s + 1)}
                   onBack={step > 0 ? () => setStep((s) => s - 1) : null}
                 />
               )}
@@ -166,7 +187,25 @@ export default function InquiryModal({ open, onClose, service }) {
   );
 }
 
-function QuestionStep({ step, index, total, selected, onPick, onBack }) {
+function QuestionStep({
+  step,
+  index,
+  total,
+  answers,
+  onPickSingle,
+  onToggleMulti,
+  onFreeText,
+  onNext,
+  onBack,
+}) {
+  const isMulti = step.type === "multi";
+  const selected = answers[step.key];
+  const multiValues = Array.isArray(selected) ? selected : [];
+  const freeTextValue = step.freeText ? answers[step.freeText.key] || "" : "";
+  const canContinue = isMulti
+    ? multiValues.length > 0 || (step.freeText && freeTextValue.trim().length > 0)
+    : selected != null;
+
   return (
     <motion.div
       key={step.key}
@@ -181,14 +220,21 @@ function QuestionStep({ step, index, total, selected, onPick, onBack }) {
       <h3 className="mt-1 font-display text-[26px] leading-[1.15] tracking-tight text-navy-900 sm:text-[30px]">
         {step.q}
       </h3>
+      {step.helper && (
+        <p className="mt-1.5 text-[13.5px] text-navy-700">{step.helper}</p>
+      )}
 
       <div className="mt-6 grid gap-2.5">
         {step.options.map((opt) => {
-          const isSel = selected === opt.v;
+          const isSel = isMulti
+            ? multiValues.includes(opt.v)
+            : selected === opt.v;
           return (
             <button
               key={opt.v}
-              onClick={() => onPick(opt.v)}
+              onClick={() =>
+                isMulti ? onToggleMulti(opt.v) : onPickSingle(opt.v)
+              }
               className={`group flex items-center justify-between rounded-2xl border bg-white px-5 py-4 text-left transition-all ${
                 isSel
                   ? "border-navy-800 shadow-lift"
@@ -199,7 +245,9 @@ function QuestionStep({ step, index, total, selected, onPick, onBack }) {
                 {opt.l}
               </span>
               <span
-                className={`grid h-7 w-7 place-items-center rounded-full border transition ${
+                className={`grid h-7 w-7 place-items-center border transition ${
+                  isMulti ? "rounded-md" : "rounded-full"
+                } ${
                   isSel
                     ? "border-navy-800 bg-navy-800 text-cream"
                     : "border-navy-800/20 text-navy-700/40 group-hover:border-navy-800/40"
@@ -207,7 +255,7 @@ function QuestionStep({ step, index, total, selected, onPick, onBack }) {
               >
                 {isSel ? (
                   <Check className="h-3.5 w-3.5" />
-                ) : (
+                ) : isMulti ? null : (
                   <ArrowRight className="h-3.5 w-3.5" />
                 )}
               </span>
@@ -216,22 +264,57 @@ function QuestionStep({ step, index, total, selected, onPick, onBack }) {
         })}
       </div>
 
-      {onBack && (
-        <button
-          onClick={onBack}
-          className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-medium text-navy-700 hover:text-navy-900"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" /> Back
-        </button>
+      {step.freeText && (
+        <div className="mt-5">
+          <label className="label">{step.freeText.label}</label>
+          <textarea
+            rows={3}
+            className="input resize-none"
+            placeholder={step.freeText.placeholder}
+            value={freeTextValue}
+            onChange={(e) => onFreeText(e.target.value)}
+          />
+        </div>
       )}
+
+      <div className="mt-6 flex items-center justify-between gap-3">
+        {onBack ? (
+          <button
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-navy-700 hover:text-navy-900"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> Back
+          </button>
+        ) : (
+          <span />
+        )}
+        {isMulti && (
+          <button
+            type="button"
+            onClick={onNext}
+            disabled={!canContinue}
+            className="btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Continue <ArrowRight className="h-4 w-4" />
+          </button>
+        )}
+      </div>
     </motion.div>
   );
 }
 
 function ContactStep({ contact, setContact, onSubmit, onBack }) {
+  const [touched, setTouched] = useState(false);
+  const phoneValid =
+    contact.phone && isPossiblePhoneNumber(contact.phone);
+  const showPhoneError = touched && contact.phone && !phoneValid;
+
   return (
     <motion.form
-      onSubmit={onSubmit}
+      onSubmit={(e) => {
+        setTouched(true);
+        onSubmit(e);
+      }}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.22 }}
@@ -259,15 +342,30 @@ function ContactStep({ contact, setContact, onSubmit, onBack }) {
           />
         </div>
         <div>
-          <label className="label">Phone</label>
-          <input
-            required
-            type="tel"
-            className="input"
-            placeholder="+1 (___) ___-____"
-            value={contact.phone}
-            onChange={(e) => setContact({ ...contact, phone: e.target.value })}
-          />
+          <label className="label">Phone (with country code)</label>
+          <div
+            className={`phone-input-wrap mt-1.5 rounded-xl border bg-white px-3 py-2 transition focus-within:border-navy-800 ${
+              showPhoneError ? "border-red-500" : "border-navy-800/15"
+            }`}
+          >
+            <PhoneInput
+              international
+              defaultCountry="CA"
+              countryCallingCodeEditable={false}
+              placeholder="Enter phone number"
+              value={contact.phone}
+              onChange={(value) =>
+                setContact({ ...contact, phone: value || "" })
+              }
+              onBlur={() => setTouched(true)}
+            />
+          </div>
+          {showPhoneError && (
+            <div className="mt-1.5 inline-flex items-center gap-1.5 text-[12px] text-red-600">
+              <AlertCircle className="h-3.5 w-3.5" />
+              Enter a valid phone number for the selected country.
+            </div>
+          )}
         </div>
         <div>
           <label className="label inline-flex items-center gap-1.5">
@@ -305,7 +403,7 @@ function ContactStep({ contact, setContact, onSubmit, onBack }) {
         </button>
         <button
           type="submit"
-          disabled={!contact.time}
+          disabled={!contact.time || !phoneValid || !contact.name.trim()}
           className="btn-gold disabled:cursor-not-allowed disabled:opacity-50"
         >
           Reserve my slot <ArrowRight className="h-4 w-4" />

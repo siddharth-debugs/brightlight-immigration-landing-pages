@@ -72,10 +72,18 @@ export default {
       {
         key: "situation",
         q: "What are you facing at work?",
+        type: "multi",
+        helper: "Select all that apply.",
+        freeText: {
+          key: "situationDetails",
+          label: "Anything else? (optional)",
+          placeholder: "Describe in your own words — confidential.",
+        },
         options: [
           { v: "abuse", l: "Abuse or harassment" },
-          { v: "unsafe", l: "Unsafe conditions" },
+          { v: "unsafe", l: "Unsafe working conditions" },
           { v: "wage", l: "Unpaid wages or fraud" },
+          { v: "threat", l: "Threats about my status / permit" },
           { v: "other", l: "Something else" },
         ],
       },

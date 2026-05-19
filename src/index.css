@@ -91,6 +91,49 @@
   }
 }
 
+/* react-phone-number-input theming */
+.phone-input-wrap .PhoneInput {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.phone-input-wrap .PhoneInputCountry {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-right: 0.6rem;
+  border-right: 1px solid rgba(19, 47, 70, 0.12);
+  margin-right: 0.4rem;
+}
+.phone-input-wrap .PhoneInputCountryIcon {
+  width: 22px;
+  height: 16px;
+  box-shadow: 0 0 0 1px rgba(19, 47, 70, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.phone-input-wrap .PhoneInputCountryIcon--border {
+  background: transparent;
+  box-shadow: 0 0 0 1px rgba(19, 47, 70, 0.08);
+}
+.phone-input-wrap .PhoneInputCountrySelectArrow {
+  color: #335f7c;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+.phone-input-wrap .PhoneInputInput {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 15px;
+  color: #0b1f31;
+  padding: 0.35rem 0;
+}
+.phone-input-wrap .PhoneInputInput::placeholder {
+  color: rgba(19, 47, 70, 0.4);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
