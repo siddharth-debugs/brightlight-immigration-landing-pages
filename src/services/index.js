@@ -1,8 +1,10 @@
-import spousal from "./spousal";
-import pgwp from "./pgwp";
-import workPermitExpiring from "./workPermitExpiring";
-import vulnerable from "./vulnerable";
-import francophone from "./francophone";
+// Explicit .js extensions so Node ESM (used by scripts/prerender-meta.mjs)
+// can import these directly. Vite handles both forms.
+import spousal from "./spousal.js";
+import pgwp from "./pgwp.js";
+import workPermitExpiring from "./workPermitExpiring.js";
+import vulnerable from "./vulnerable.js";
+import francophone from "./francophone.js";
 
 export const SERVICES = [
   spousal,
