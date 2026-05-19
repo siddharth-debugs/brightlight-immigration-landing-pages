@@ -6,6 +6,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import InquiryModal from "../components/InquiryModal";
 import { SERVICES } from "../services";
+import { setSEO, setJSONLD, SITE_URL } from "../lib/seo";
+import { BRAND } from "../data";
 
 export default function IndexPage() {
   const [open, setOpen] = useState(false);
@@ -13,8 +15,61 @@ export default function IndexPage() {
   const closeModal = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
-    document.title =
-      "Brightlight Immigration · Canadian Immigration Consultants (RCIC R522969)";
+    setSEO({
+      title:
+        "Brightlight Immigration — Licensed RCIC R522969 in Surrey, BC",
+      description:
+        "Licensed Canadian immigration consultants. Spousal sponsorship, PGWP transitions, work permit extensions, Francophone Mobility, and Vulnerable Worker OWP. Free 15-minute call with RCIC R522969.",
+      path: "/",
+      type: "website",
+    });
+
+    setJSONLD("ld-organization", {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "@id": `${SITE_URL}/#organization`,
+      name: BRAND.name,
+      url: SITE_URL,
+      logo: BRAND.logo,
+      image: BRAND.logo,
+      telephone: BRAND.phone,
+      email: BRAND.email,
+      priceRange: "$$",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "15315 66 Ave Unit 327",
+        addressLocality: "Surrey",
+        addressRegion: "BC",
+        postalCode: "V3S 2A1",
+        addressCountry: "CA",
+      },
+      areaServed: { "@type": "Country", name: "Canada" },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: String(BRAND.rating),
+        reviewCount: String(BRAND.reviews),
+        bestRating: "5",
+        worstRating: "1",
+      },
+      sameAs: [
+        "https://www.instagram.com/brightlightimmigration/",
+        "https://ca.linkedin.com/in/loveneet-paneswar-5b2377198",
+      ],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Immigration services",
+        itemListElement: SERVICES.map((s) => ({
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: s.fullName,
+            url: `${SITE_URL}/${s.slug}`,
+            description: s.tagline,
+          },
+        })),
+      },
+    });
+
     window.scrollTo(0, 0);
   }, []);
 

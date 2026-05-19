@@ -13,6 +13,8 @@ import FinalCTA from "../components/FinalCTA";
 import Footer from "../components/Footer";
 import InquiryModal from "../components/InquiryModal";
 import StickyMobileCTA from "../components/StickyMobileCTA";
+import { setSEO, setJSONLD, SITE_URL } from "../lib/seo";
+import { BRAND } from "../data";
 
 export default function ServicePage() {
   const { slug } = useParams();
@@ -23,9 +25,35 @@ export default function ServicePage() {
 
   useEffect(() => {
     if (service?.meta) {
-      document.title = service.meta.title;
-      const meta = document.querySelector('meta[name="description"]');
-      if (meta) meta.setAttribute("content", service.meta.description);
+      setSEO({
+        title: service.meta.title,
+        description: service.meta.description,
+        path: `/${service.slug}`,
+        image: service.meta.image,
+        type: "article",
+      });
+
+      setJSONLD("ld-service", {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": `${SITE_URL}/${service.slug}#service`,
+        name: service.fullName,
+        description: service.meta.description,
+        url: `${SITE_URL}/${service.slug}`,
+        category: service.category,
+        provider: {
+          "@type": "ProfessionalService",
+          "@id": `${SITE_URL}/#organization`,
+          name: BRAND.name,
+          telephone: BRAND.phone,
+          email: BRAND.email,
+        },
+        areaServed: { "@type": "Country", name: "Canada" },
+        audience: {
+          "@type": "Audience",
+          audienceType: service.audience,
+        },
+      });
     }
     window.scrollTo(0, 0);
   }, [service]);
