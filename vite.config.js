@@ -9,3 +9,4 @@ export default defineConfig({
   // the correct asset paths for GitHub Pages.
   base: process.env.BASE || "/",
 });
+  

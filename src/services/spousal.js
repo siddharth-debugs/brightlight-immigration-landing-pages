@@ -74,7 +74,7 @@ export default {
         options: [
           { v: "married", l: "Married" },
           { v: "common-law", l: "Common-law" },
-          { v: "neither", l: "Neither" },
+          { v: "neither", l: "Neither", ineligible: true },
         ],
       },
       {

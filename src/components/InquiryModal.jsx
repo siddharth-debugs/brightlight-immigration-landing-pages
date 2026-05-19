@@ -10,6 +10,7 @@ import {
   Flame,
   Clock,
   AlertCircle,
+  Info,
 } from "lucide-react";
 import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
@@ -93,6 +94,19 @@ export default function InquiryModal({ open, onClose, service }) {
   const isContact = step === STEPS.length;
   const progress = ((step + (submitted ? 1 : 0)) / total) * 100;
 
+  // An answer is ineligible if the user picked any option flagged
+  // ineligible (single-select) or selected one of them in a multi step.
+  const ineligible = STEPS.some((stepDef) => {
+    const picked = answers[stepDef.key];
+    const ineligibleValues = (stepDef.options || [])
+      .filter((o) => o.ineligible)
+      .map((o) => o.v);
+    if (ineligibleValues.length === 0) return false;
+    if (Array.isArray(picked))
+      return picked.some((v) => ineligibleValues.includes(v));
+    return ineligibleValues.includes(picked);
+  });
+
   return (
     <AnimatePresence>
       {open && (
@@ -150,7 +164,15 @@ export default function InquiryModal({ open, onClose, service }) {
 
             <div className="max-h-[70vh] overflow-y-auto px-6 py-7 sm:px-8 sm:py-8">
               {submitted ? (
-                <Success contact={contact} onClose={onClose} />
+                ineligible ? (
+                  <Ineligible
+                    contact={contact}
+                    service={service}
+                    onClose={onClose}
+                  />
+                ) : (
+                  <Success contact={contact} onClose={onClose} />
+                )
               ) : isContact ? (
                 <ContactStep
                   contact={contact}
@@ -410,6 +432,39 @@ function ContactStep({ contact, setContact, onSubmit, onBack }) {
         </button>
       </div>
     </motion.form>
+  );
+}
+
+function Ineligible({ contact, service, onClose }) {
+  const label = service?.fullName || "this program";
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="py-2 text-center"
+    >
+      <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-amber-100 text-amber-700 shadow-soft">
+        <Info className="h-7 w-7" strokeWidth={2.4} />
+      </div>
+      <h3 className="mt-5 font-display text-[26px] leading-tight tracking-tight text-navy-900 sm:text-[30px]">
+        You may not qualify for {label}.
+      </h3>
+      <p className="mx-auto mt-3 max-w-[420px] text-[14.5px] leading-[1.6] text-navy-700">
+        Based on your answers, {label} likely isn't the right path for you.
+        That's not the end — there are several other Canadian immigration
+        routes we can review together.
+      </p>
+      <p className="mx-auto mt-3 max-w-[420px] text-[13.5px] text-navy-700">
+        We've received your details and will call{" "}
+        <span className="font-semibold text-navy-900">
+          {contact.phone || "you"}
+        </span>{" "}
+        within 24 hours with realistic next steps.
+      </p>
+      <button onClick={onClose} className="btn-primary mt-6">
+        Close
+      </button>
+    </motion.div>
   );
 }
 
