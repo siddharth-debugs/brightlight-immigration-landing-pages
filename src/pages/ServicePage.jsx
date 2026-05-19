@@ -39,7 +39,7 @@ export default function ServicePage() {
         <TrustStrip />
         <Benefits service={service} onCTA={openModal} />
         <Founder onCTA={openModal} />
-        <Testimonials />
+        <Testimonials service={service} />
         <FinalCTA service={service} onCTA={openModal} />
       </main>
 

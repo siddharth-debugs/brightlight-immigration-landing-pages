@@ -81,11 +81,38 @@ export const REVIEWS = [
   },
 ];
 
-export const REELS = [
-  { id: "y5Pz7WPm41w", name: "Sukhwinder Singh", label: "Client approval story" },
-  { id: "Ex-w2fTfMn8", name: "Manpreet Kaur", label: "Client testimonial" },
-  { id: "gIb5gfIqxdI", name: "Amandeep Kaur", label: "Application journey" },
-  { id: "lBnYycZ1aSY", name: "Navjot Kaur", label: "Client experience" },
-  { id: "uPhje0jwtuo", name: "Harpreet Kaur", label: "Approval update" },
-  { id: "eZTZE1ixfjU", name: "Ranjit Singh", label: "Brightlight review" },
-];
+// Instagram reel IDs per service slug. Embedded via
+// https://www.instagram.com/reel/{id}/embed/
+export const REELS_BY_SERVICE = {
+  "spousal-sponsorship": [
+    "DTS_VWOE5dS",
+    "DT8Gl6WkouM",
+    "DSAl5w1Dbjx",
+    "DNlXiMryjec",
+  ],
+  "pgwp-expiring": [
+    "DYSvA8cEVI3",
+    "DWGF9i9DhZ7",
+    "DT_6JD_CvcW",
+    "DSiH0uGEhA7",
+    "DRxJFoaAGvO",
+    "DOoUNlZkqsB",
+    "DLT70T1S5hO",
+  ],
+  "work-permit-expiring": [
+    "DYQG41ZiLse",
+    "DWaZ0vgiS7v",
+    "DT25T37jrxi",
+    "DSRcd2KlIYP",
+    "DSEjQPIDZ_n",
+  ],
+  "vulnerable-worker-permit": [
+    "DYX47vPj5ue",
+    "DVtdSukFVx6",
+    "DVcuLsRk6Rk",
+    "DTO42IZFPvm",
+    "DN8evuEkhrw",
+    "DMyI25uyMti",
+    "DMc0tsJSS3J",
+  ],
+};
