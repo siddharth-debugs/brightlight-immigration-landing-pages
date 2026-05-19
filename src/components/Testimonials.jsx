@@ -1,6 +1,13 @@
-import { useRef } from "react";
-import { motion } from "framer-motion";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Star,
+  Quote,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  X,
+} from "lucide-react";
 import {
   REELS_BY_SERVICE,
   REVIEWS,
@@ -10,6 +17,7 @@ import {
 
 export default function Testimonials({ service }) {
   const reels = (service && REELS_BY_SERVICE[service.slug]) || [];
+  const [openId, setOpenId] = useState(null);
 
   return (
     <section className="relative bg-white py-20 sm:py-24">
@@ -27,27 +35,30 @@ export default function Testimonials({ service }) {
           </p>
         </div>
 
-        {/* Written reviews */}
         <div className="mx-auto mt-12 grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
           {REVIEWS.slice(0, 3).map((r, i) => (
             <ReviewCard key={r.name} r={r} i={i} />
           ))}
         </div>
 
-        {reels.length > 0 && <ReelsCarousel reels={reels} />}
+        {reels.length > 0 && (
+          <ReelsCarousel reels={reels} onOpen={setOpenId} />
+        )}
       </div>
+
+      <ReelLightbox openId={openId} onClose={() => setOpenId(null)} />
     </section>
   );
 }
 
-function ReelsCarousel({ reels }) {
+function ReelsCarousel({ reels, onOpen }) {
   const scrollerRef = useRef(null);
 
   const scrollBy = (dir) => {
     const el = scrollerRef.current;
     if (!el) return;
     const card = el.querySelector("[data-reel-card]");
-    const step = card ? card.getBoundingClientRect().width + 20 : 320;
+    const step = card ? card.getBoundingClientRect().width + 16 : 220;
     el.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
@@ -89,10 +100,15 @@ function ReelsCarousel({ reels }) {
 
         <div
           ref={scrollerRef}
-          className="scrollbar-none flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="scrollbar-none flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {reels.map((id, i) => (
-            <PhoneCard key={id} id={id} i={i} />
+            <ReelTile
+              key={id}
+              id={id}
+              i={i}
+              onPlay={() => onOpen(id)}
+            />
           ))}
         </div>
       </div>
@@ -100,30 +116,99 @@ function ReelsCarousel({ reels }) {
   );
 }
 
-function PhoneCard({ id, i }) {
+function ReelTile({ id, i, onPlay }) {
   return (
-    <motion.div
+    <motion.button
       data-reel-card
+      type="button"
+      onClick={onPlay}
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: i * 0.04 }}
-      className="relative w-[260px] shrink-0 snap-center sm:w-[280px]"
+      className="group relative aspect-[9/16] w-[180px] shrink-0 snap-center overflow-hidden rounded-2xl bg-navy-900 ring-1 ring-navy-800/10 transition hover:ring-2 hover:ring-gold-400 sm:w-[200px]"
+      aria-label="Play client reel"
     >
-      <div className="relative rounded-[36px] bg-navy-900 p-2 shadow-lift ring-1 ring-navy-800/10">
-        <div className="pointer-events-none absolute left-1/2 top-2.5 z-10 h-1.5 w-14 -translate-x-1/2 rounded-full bg-cream/20" />
-        <div className="overflow-hidden rounded-[28px] bg-black">
-          <video
-            src={reelVideoSrc(id)}
-            poster={reelPosterSrc(id)}
-            controls
-            playsInline
-            preload="metadata"
-            className="block aspect-[9/16] w-full bg-black object-cover"
-          />
-        </div>
+      <img
+        src={reelPosterSrc(id)}
+        alt=""
+        loading="lazy"
+        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-navy-950/15" />
+      <div className="absolute inset-0 grid place-items-center">
+        <span className="grid h-14 w-14 place-items-center rounded-full bg-gold-400 text-navy-900 shadow-lift transition group-hover:scale-110">
+          <Play className="h-5 w-5 fill-navy-900" strokeWidth={0} />
+        </span>
       </div>
-    </motion.div>
+    </motion.button>
+  );
+}
+
+function ReelLightbox({ openId, onClose }) {
+  useEffect(() => {
+    if (!openId) return;
+    const onKey = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [openId, onClose]);
+
+  return (
+    <AnimatePresence>
+      {openId && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 z-[85] flex items-center justify-center bg-navy-950/85 p-4 backdrop-blur-sm"
+        >
+          <button
+            type="button"
+            onClick={onClose}
+            className="fixed right-5 top-5 z-[90] inline-flex items-center gap-1.5 rounded-full bg-cream/95 px-3.5 py-2 text-[12.5px] font-semibold text-navy-900 shadow-lift transition hover:bg-white sm:right-8 sm:top-8"
+            aria-label="Close video"
+          >
+            <X className="h-3.5 w-3.5" /> Close
+          </button>
+
+          <motion.div
+            initial={{ scale: 0.92, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-[360px] sm:max-w-[380px]"
+            style={{ maxHeight: "90vh" }}
+          >
+            <div className="relative rounded-[36px] bg-navy-900 p-2.5 shadow-lift ring-1 ring-cream/10">
+              <div className="pointer-events-none absolute left-1/2 top-3 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-cream/20" />
+
+              <div
+                className="relative overflow-hidden rounded-[28px] bg-black"
+                style={{ aspectRatio: "9 / 16" }}
+              >
+                <video
+                  key={openId}
+                  src={reelVideoSrc(openId)}
+                  poster={reelPosterSrc(openId)}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="metadata"
+                />
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
