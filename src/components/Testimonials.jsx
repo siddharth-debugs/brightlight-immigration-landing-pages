@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Quote, Play, X } from "lucide-react";
+import { Play, X } from "lucide-react";
 import {
   REELS_BY_SERVICE,
-  REVIEWS,
   reelVideoSrc,
   reelPosterSrc,
 } from "../data";
@@ -24,14 +23,8 @@ export default function Testimonials({ service }) {
             <span className="italic text-navy-700">home together.</span>
           </h2>
           <p className="mt-3 text-[15px] text-navy-700">
-            Real reviews · Real client videos · Real approvals.
+            Real client videos · Real approvals.
           </p>
-        </div>
-
-        <div className="mx-auto mt-12 grid max-w-6xl gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {REVIEWS.slice(0, 3).map((r, i) => (
-            <ReviewCard key={r.name} r={r} i={i} />
-          ))}
         </div>
 
         {reels.length > 0 && (
@@ -46,22 +39,11 @@ export default function Testimonials({ service }) {
 
 function ReelsGrid({ reels, onOpen }) {
   return (
-    <div className="mt-20">
-      <div className="mx-auto max-w-2xl text-center">
-        <span className="eyebrow justify-center">
-          <Play className="h-3 w-3 fill-gold-500 text-gold-500" />
-          Approval stories
-        </span>
-        <h3 className="mt-3 font-display text-[28px] leading-[1.05] tracking-tight text-navy-900 sm:text-[36px]">
-          In their{" "}
-          <span className="italic text-navy-700">own words.</span>
-        </h3>
-        <p className="mt-3 text-[14px] text-navy-700">
-          {reels.length} client {reels.length === 1 ? "story" : "stories"} · Tap any to watch
-        </p>
-      </div>
-
-      <div className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div className="mt-10">
+      <p className="text-center text-[13px] text-navy-700/80">
+        {reels.length} client {reels.length === 1 ? "story" : "stories"} · Tap any to watch
+      </p>
+      <div className="mx-auto mt-6 grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
         {reels.map((id, i) => (
           <ReelTile key={id} id={id} i={i} onPlay={() => onOpen(id)} />
         ))}
@@ -181,47 +163,3 @@ function ReelLightbox({ openId, onClose }) {
   );
 }
 
-function ReviewCard({ r, i }) {
-  const initials = r.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
-
-  return (
-    <motion.figure
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.45, delay: i * 0.06 }}
-      className="rounded-2xl border border-navy-800/10 bg-white p-6"
-    >
-      <div className="flex items-start justify-between">
-        <Quote className="h-5 w-5 text-gold-400" />
-        <div className="flex">
-          {[...Array(r.rating)].map((_, j) => (
-            <Star key={j} className="h-3.5 w-3.5 fill-gold-400 text-gold-400" />
-          ))}
-        </div>
-      </div>
-
-      <blockquote className="mt-3 text-[14.5px] leading-[1.55] text-navy-800">
-        “{r.text}”
-      </blockquote>
-
-      <figcaption className="mt-5 flex items-center gap-3 border-t border-navy-800/10 pt-4">
-        <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-navy-800 to-navy-600 text-[12px] font-semibold text-cream">
-          {initials}
-        </div>
-        <div className="leading-tight">
-          <div className="text-[13.5px] font-semibold text-navy-900">
-            {r.name}
-          </div>
-          <div className="text-[11.5px] uppercase tracking-wider text-navy-700/80">
-            {r.tag}
-          </div>
-        </div>
-      </figcaption>
-    </motion.figure>
-  );
-}
