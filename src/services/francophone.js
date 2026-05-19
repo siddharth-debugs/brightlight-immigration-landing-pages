@@ -51,6 +51,36 @@ export default {
       },
     ],
   },
+  highlights: {
+    eyebrow: "At a glance",
+    title1: "The program in",
+    titleItalic: "30 seconds.",
+    subhead:
+      "What an officer cares about. Stripped to the four facts that decide your file.",
+    items: [
+      {
+        label: "LMIA",
+        value: "Not required",
+        note: "Filed under exemption code C16 (Mobilité Francophone) — no Labour Market Impact Assessment.",
+      },
+      {
+        label: "Permit type",
+        value: "Open · up to 3 years",
+        note: "Work for almost any employer almost anywhere in Canada outside Quebec.",
+      },
+      {
+        label: "French level",
+        value: "NCLC 5+",
+        note: "Only speaking and listening — not all four skills. Proven via TEF Canada or TCF Canada.",
+      },
+      {
+        label: "Where you can work",
+        value: "Outside Quebec",
+        note: "Any province or territory. Most TEER categories eligible; primary agriculture in TEER 4–5 excluded.",
+      },
+    ],
+    footnote: "Sources: IRCC · Francophone Mobility (updated July 2025)",
+  },
   finalCTA: {
     title1: "Your French is the key.",
     italic: "Use it well.",

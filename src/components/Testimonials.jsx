@@ -11,6 +11,8 @@ export default function Testimonials({ service }) {
   const reels = (service && REELS_BY_SERVICE[service.slug]) || [];
   const [openId, setOpenId] = useState(null);
 
+  if (reels.length === 0) return null;
+
   return (
     <section className="relative bg-cream py-20 sm:py-28">
       <div className="container-x">
