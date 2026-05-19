@@ -5,32 +5,22 @@ import { BRAND } from "../data";
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL || "https://www.brightlightimmigration.ca";
 
-// 1200x630 OG card built from the brand logo on a navy background via
-// Cloudinary on-the-fly transforms. Use this for any page that doesn't
-// supply its own custom card.
+// 1200x630 OG card: brand logo scaled to a sensible size and centered
+// on a navy canvas. No per-page text overlay — the link unfurl looked
+// noisy when crawlers compressed the text.
 export const DEFAULT_OG_IMAGE =
-  "https://res.cloudinary.com/dkqo3uz5o/image/upload/w_1200,h_630,c_pad,b_rgb:132f46,q_auto,f_jpg/v1776960199/brightlight-main-logo_amxfxh.webp";
+  "https://res.cloudinary.com/dkqo3uz5o/image/upload/" +
+  "c_scale,w_640/" +
+  "c_pad,w_1200,h_630,b_rgb:132f46,q_auto,f_jpg/" +
+  "v1776960199/brightlight-main-logo_amxfxh.webp";
 
 /**
- * Build a 1200x630 OG card with the brand logo centered on a navy
- * background and a single line of gold serif text near the bottom.
- * Falls back to DEFAULT_OG_IMAGE for empty input.
+ * Returns the brand OG card. Title arg is accepted for API compatibility
+ * (so callers don't need to change) but is no longer rendered onto the
+ * image — it's still used for og:image:alt elsewhere.
  */
-export function brandOgImage(title) {
-  if (!title) return DEFAULT_OG_IMAGE;
-  // Cloudinary text layer encoding: replace comma and slash since they
-  // have special meaning in transformation URLs.
-  const text = encodeURIComponent(title)
-    .replace(/,/g, "%252C")
-    .replace(/\//g, "%252F");
-  const overlay = `l_text:Georgia_56_bold:${text},co_rgb:e8c47c,c_fit,w_980,g_south,y_90`;
-  return (
-    "https://res.cloudinary.com/dkqo3uz5o/image/upload/" +
-    "w_1200,h_630,c_pad,b_rgb:132f46/" +
-    "c_scale,w_320,g_north,y_150/" +
-    `${overlay},q_auto,f_jpg/` +
-    "v1776960199/brightlight-main-logo_amxfxh.webp"
-  );
+export function brandOgImage(_title) {
+  return DEFAULT_OG_IMAGE;
 }
 
 function setMeta(attr, key, value) {

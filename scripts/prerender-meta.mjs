@@ -16,19 +16,13 @@ const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
 const SITE_URL = process.env.SITE_URL || "https://www.brightlightimmigration.ca";
 
-function brandOgImage(title) {
-  const base =
-    "https://res.cloudinary.com/dkqo3uz5o/image/upload/" +
-    "w_1200,h_630,c_pad,b_rgb:132f46";
-  if (!title) {
-    return `${base},q_auto,f_jpg/v1776960199/brightlight-main-logo_amxfxh.webp`;
-  }
-  const text = encodeURIComponent(title)
-    .replace(/,/g, "%252C")
-    .replace(/\//g, "%252F");
-  const overlay = `l_text:Georgia_56_bold:${text},co_rgb:e8c47c,c_fit,w_980,g_south,y_90`;
+function brandOgImage() {
+  // 1200x630 OG card: brand logo scaled to a sensible size and centered
+  // on a navy canvas. Same definition as src/lib/seo.js -- kept in sync.
   return (
-    `${base}/c_scale,w_320,g_north,y_150/${overlay},q_auto,f_jpg/` +
+    "https://res.cloudinary.com/dkqo3uz5o/image/upload/" +
+    "c_scale,w_640/" +
+    "c_pad,w_1200,h_630,b_rgb:132f46,q_auto,f_jpg/" +
     "v1776960199/brightlight-main-logo_amxfxh.webp"
   );
 }
